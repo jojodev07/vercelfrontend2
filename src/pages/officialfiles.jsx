@@ -7,13 +7,13 @@ import { FileText, Download, ExternalLink, HardDrive } from "lucide-react"
 export function OfficialFiles() {
 
     const documents = [
-    { id: 1, name: "اسس النجاح والرسوب", size: "21.1 MB", division: "وزارة التربية والتعليم", date: "School Year of 2026/2027", hrefTag: "public/documents/najjah.pdf" },
-    { id: 2, name: "تعليمات الانضباط", size: "1.7 MB", division: "وزارة التربية والتعليم", date: "2017", hrefTag: "public/documents/indibatt.pdf" },
-    { id: 3, name: "مجالس اولياء الامور", size: "139 KB", division: "وزارة التربية والتعليم", date: "2007", hrefTag: "public/documents/awleyaa.pdf" },
-    { id: 4, name: "تعليمات الدوام", size: "97 KB", division: "وزارة التربية والتعليم", date: "2013", hrefTag: "src/documents/t3lematt.pdf" },
-    { id: 5, name: "رتب المعلمين", size: "177 KB", division: "وزارة التربية والتعليم", date: "2002", hrefTag: "src/documents/rotabb.pdf" },
-    { id: 6, name: "ميثاق مهنة التعليم", size: "1.6 MB", division: "وزارة التربية والتعليم", date: "2020", hrefTag: "src/documents/methaqq.pdf" },
-    { id: 5, name: "الإجازات التربوية", size: "166 KB", division: "وزارة التربية والتعليم", date: "1975", hrefTag: "src/documents/ijazatt.pdf" }
+    { id: 1, name: "اسس النجاح والرسوب", size: "21.1 MB", division: "وزارة التربية والتعليم", date: "School Year of 2026/2027", hrefTag: "/documents/najjah.pdf" },
+    { id: 2, name: "تعليمات الانضباط", size: "1.7 MB", division: "وزارة التربية والتعليم", date: "2017", hrefTag: "/documents/indibatt.pdf" },
+    { id: 3, name: "مجالس اولياء الامور", size: "139 KB", division: "وزارة التربية والتعليم", date: "2007", hrefTag: "/documents/awleyaa.pdf" },
+    { id: 4, name: "تعليمات الدوام", size: "97 KB", division: "وزارة التربية والتعليم", date: "2013", hrefTag: "/documents/t3lematt.pdf" },
+    { id: 5, name: "رتب المعلمين", size: "177 KB", division: "وزارة التربية والتعليم", date: "2002", hrefTag: "/documents/rotabb.pdf" },
+    { id: 6, name: "ميثاق مهنة التعليم", size: "1.6 MB", division: "وزارة التربية والتعليم", date: "2020", hrefTag: "/documents/methaqq.pdf" },
+    { id: 5, name: "الإجازات التربوية", size: "166 KB", division: "وزارة التربية والتعليم", date: "1975", hrefTag: "/documents/ijazatt.pdf" }
     ];
 
     return (
