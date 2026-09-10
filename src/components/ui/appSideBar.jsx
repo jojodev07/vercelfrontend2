@@ -52,7 +52,7 @@ const getInitials = (name) => {
     .join('');
 }
  
-export function AppSidebar() {
+export function AppSidebar({sessions}) {
 
   const navigate = useNavigate();
   const {userEmail, name} = useContext(AuthContext);
@@ -82,6 +82,15 @@ export function AppSidebar() {
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )
+        })}
+        {sessions.map((session) => {
+          return (
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <p>A new message was sent! this is working!</p>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )
         })}
         </SidebarMenu>
       <SidebarContent>

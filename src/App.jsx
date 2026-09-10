@@ -8,6 +8,9 @@ import { Button } from './components/ui/button';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
 import Markdown from 'react-markdown';
+import { useOutletContext } from "react-router-dom"
+
+
 
 export default function ChatDashboard() {
   const [messages, setMessages] = useState([]);
@@ -17,6 +20,28 @@ export default function ChatDashboard() {
   const [loading, setLoading] = useState(false);
 
   const {name} = useContext(AuthContext);
+
+  const { addChatMessage } = useOutletContext();
+
+  const loadTestMessages = () => {
+    setMessages([
+      {
+        id: '1',
+        role: 'user',
+        content: 'كيف أدير صف كثير الحركة؟',
+      },
+      {
+        id: '2',
+        role: 'assistant',
+        content: 'هناك عدة استراتيجيات فعالة لإدارة الصف، منها:\n\n- وضع قواعد واضحة منذ البداية\n- استخدام التعزيز الإيجابي\n- تنويع الأنشطة التعليمية',
+      },
+      {
+        id: '3',
+        role: 'user',
+        content: 'هل يمكنك إعطائي مثالاً عملياً؟',
+      },
+    ]);
+  };
 
   // Auto-scroll to the latest message
   useEffect(() => {
@@ -40,6 +65,7 @@ export default function ChatDashboard() {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    addChatMessage(userMessage);
     
     const currentid = (Date.now() + 1).toString();
     setMessages((prev) => [
@@ -61,6 +87,7 @@ export default function ChatDashboard() {
           : msg
           )
         )
+
       }).catch(e => {
           setMessages(prev => 
           prev.map(msg => 
@@ -70,7 +97,7 @@ export default function ChatDashboard() {
           )
         )
       }).finally(() => {
-        setLoading(false)
+        setLoading(false);
       })
 
     // Simulate AI response
@@ -81,7 +108,6 @@ export default function ChatDashboard() {
   return (
     <div className="flex h-[calc(100vh-theme(spacing.14))] w-screen flex-col bg-zinc-50 font-sans text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 overflow-hidden" dir='rtl'>
       
-
       {/* Main Workspace Layout */}
       {/* Framer Motion switches this flex layout smoothly between centered and bottom-heavy alignments */}
       <div className={`flex flex-1 flex-col overflow-hidden transition-colors duration-500 font-['Noto_Sans_Arabic_Variable'] ${
@@ -108,7 +134,7 @@ export default function ChatDashboard() {
 
                   <h2 className="text-xl font-semibold tracking-tight leading-[1.35]
                     text-gray-700 dark:text-zinc-100">
-                    أهلا بك أستاذ {name}👋
+                    أهلا بك {name}👋
                   </h2>
 
                   <p className="text-gray-700 dark:text-zinc-300">
@@ -131,28 +157,36 @@ export default function ChatDashboard() {
                     variant="outline"
                     className="rounded-full border-green-300 dark:border-green-700 dark:text-green-300"
                   >
-                    الإدارة الصفية 🏫
+                    التعلم والتعليم
                   </Button>
 
                   <Button
                     variant="outline"
                     className="rounded-full border-blue-300 dark:border-blue-700 dark:text-blue-300"
                   >
-                    النظام الوزاري 🏛️
+                  التشريعات التربوية
                   </Button>
 
                   <Button
                     variant="outline"
                     className="rounded-full border-purple-400 dark:border-purple-700 dark:text-purple-300"
                   >
-                    الشراكة المجتمعية 🤝
+                    بيئة التعلم
                   </Button>
 
                   <Button
                     variant="outline"
                     className="rounded-full border-gray-400 dark:border-zinc-600 dark:text-zinc-300"
                   >
-                    علم النفس التربوي 🧠
+                  البيداغوجية
+                    
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={loadTestMessages}
+                    className="rounded-full border-red-300 dark:border-red-700 dark:text-red-300"
+                  >
+                      التعلم للحياة 
                   </Button>
                 </div>
             </motion.div>

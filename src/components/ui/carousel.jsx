@@ -1,7 +1,7 @@
 import * as React from "react"
+import { cn } from "cn"
 import useEmblaCarousel from "embla-carousel-react";
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
