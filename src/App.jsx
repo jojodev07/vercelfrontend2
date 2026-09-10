@@ -8,20 +8,27 @@ import { Button } from './components/ui/button';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
 import Markdown from 'react-markdown';
-import { useOutletContext } from "react-router-dom"
+import { useOutletContext } from "react-router-dom";
 
 
 
 export default function ChatDashboard() {
   const [messages, setMessages] = useState([]);
-  const [sessions, setSessions] = useState([]);
+  const {
+    sessions,
+    setSessions,
+    sessionToLoad,
+    clearSessionToLoad,
+    sessionToDelete,
+    clearSessionToDelete,
+  } = useOutletContext();
+  const [activeSessionId, setActiveSessionId] = useState(null);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const {name} = useContext(AuthContext);
 
-  const { addChatMessage } = useOutletContext();
 
   const loadTestMessages = () => {
     setMessages([
@@ -50,22 +57,69 @@ export default function ChatDashboard() {
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (!sessionToLoad) return;
+
+    const session = sessions.find((item) => item.id === sessionToLoad);
+    if (session) {
+      setActiveSessionId(session.id);
+      setMessages(session.messages);
+    }
+    clearSessionToLoad();
+  }, [sessionToLoad, sessions, clearSessionToLoad]);
+
+  useEffect(() => {
+    if (!sessionToDelete) return;
+
+    if (sessionToDelete === activeSessionId) {
+      setActiveSessionId(null);
+      setMessages([]);
+    }
+    clearSessionToDelete();
+  }, [sessionToDelete, activeSessionId, clearSessionToDelete]);
+
+  useEffect(() => {
+    if (!activeSessionId || sessionToLoad) return;
+
+    setSessions((currentSessions) => currentSessions.map((session) => (
+      session.id === activeSessionId ? { ...session, messages } : session
+    )));
+  }, [activeSessionId, messages, setSessions]);
+
   const handleSend = async (e) => {
     e.preventDefault();
 
-
-    setLoading(true);
     const request = input;
     if (!request.trim()) return;
+
+    setLoading(true);
     const userMessage = {
       id: Date.now().toString(),
       role: 'user',
       content: request,
     };
 
+    if (!activeSessionId || !sessions.some((session) => session.id === activeSessionId)) {
+      const sessionId = userMessage.id;
+      setActiveSessionId(sessionId);
+      setSessions((currentSessions) => [
+        ...currentSessions,
+        {
+          id: sessionId,
+          title: request.trim().slice(0, 40),
+          messages: [userMessage],
+        },
+      ]);
+    } else if (messages.length === 0) {
+      setSessions((currentSessions) => currentSessions.map((session) => (
+        session.id === activeSessionId
+          ? { ...session, title: request.trim().slice(0, 40) }
+          : session
+      )));
+    }
+
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-    addChatMessage(userMessage);
     
     const currentid = (Date.now() + 1).toString();
     setMessages((prev) => [
@@ -183,7 +237,6 @@ export default function ChatDashboard() {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={loadTestMessages}
                     className="rounded-full border-red-300 dark:border-red-700 dark:text-red-300"
                   >
                       التعلم للحياة 

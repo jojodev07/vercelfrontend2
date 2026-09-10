@@ -5,19 +5,14 @@ import {
   SidebarGroup,
   SidebarHeader,
   SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuAction,
-  SidebarGroupAction,
-  SidebarGroupContent
+  SidebarMenuAction
 } from "@/components/ui/sidebar"
 import {
   Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -30,8 +25,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-import { useNavigate } from "react-router-dom";
-import { Brain, TextSearch, NotebookPen, Star } from "lucide-react"
+import { MessageSquare, Star, Plus, Pencil, Trash2 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
@@ -39,6 +33,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState } from "react";
 import { sendDatatoSheet } from "../../axiosServices/axiosHelper";
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 
 const getInitials = (name) => {
@@ -52,49 +47,124 @@ const getInitials = (name) => {
     .join('');
 }
  
-export function AppSidebar({sessions}) {
+export function AppSidebar({
+  sessions,
+  onSessionSelect,
+  onNewSession,
+  onRenameSession,
+  onDeleteSession,
+}) {
 
-  const navigate = useNavigate();
   const {userEmail, name} = useContext(AuthContext);
 
   const [message, setMessage] = useState("");
   const [msgBoolean, setMsgBoolean] = useState(false);
+  const [renameSession, setRenameSession] = useState(null);
+  const [renameTitle, setRenameTitle] = useState("");
 
-  const pages = [{id: 1, name: "نموذج الذكاء الاصطناعي", path: "/" , icon: Brain, color:"pink"},
-                {id: 2, name: "ملفات وزارة مهمة", path: "/files", icon: TextSearch, color:"gray"},
-                {id: 3, name: "كتابة خطة تحضير درس (قريبا)", path: "/", icon: NotebookPen, color:"blue"}]
+  const openRenameDialog = (session) => {
+    setRenameSession(session);
+    setRenameTitle(session.title);
+  };
+
+  const saveSessionName = () => {
+    const title = renameTitle.trim();
+    if (!renameSession || !title) return;
+
+    onRenameSession(renameSession.id, title);
+    setRenameSession(null);
+  };
 
   return (
-    <Sidebar>
-      <SidebarHeader className="py-4">
-        <p className="font-bold font-['Noto_Sans_Arabic_Variable'] text-center mb-2">المعلم الخبير</p>
-        <Separator></Separator>
+    <Sidebar className="border-l-0 shadow-xl">
+      <SidebarHeader className="border-b border-zinc-200/80 px-4 py-5 dark:border-zinc-800">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="min-w-0">
+              <p className="truncate font-bold font-['Noto_Sans_Arabic_Variable']">مساحتك للمحادثات</p>
+            </div>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            title="محادثة جديدة"
+            onClick={onNewSession}
+            className="size-9 shrink-0 rounded-xl"
+          >
+            <Plus className="size-4" />
+          </Button>
+        </div>
       </SidebarHeader>
-        <SidebarMenu>
-        {pages.map((page) => {
-                  const Icon = page.icon
-
-                  return (
-                    <SidebarMenuItem key={page.id} className="space-y-3">
-                      <SidebarMenuButton onClick={() => navigate(page.path)} className="flex items-center hover:shadow-md transition-shadow">
-                        <Icon color={page.color} />
-                        <span className="font-bold font-['Noto_Sans_Arabic_Variable'] text-center">{page.name}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  )
-        })}
-        {sessions.map((session) => {
-          return (
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <p>A new message was sent! this is working!</p>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )
-        })}
-        </SidebarMenu>
-      <SidebarContent>
+      <SidebarContent className="px-2">
+        <SidebarGroup className="py-4">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {sessions.length === 0 && (
+                <p className="px-2 py-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
+                  لا توجد محادثات بعد
+                </p>
+              )}
+              {sessions.map((session) => (
+                <SidebarMenuItem key={session.id}>
+                  <SidebarMenuButton
+                    className="h-10 rounded-xl px-3 text-right hover:bg-emerald-50 hover:text-emerald-800 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
+                    onClick={() => onSessionSelect(session.id)}
+                    title={session.title}
+                  >
+                    <MessageSquare className="size-4 shrink-0 text-emerald-600" />
+                    <span className="truncate font-['Noto_Sans_Arabic_Variable'] text-sm">
+                      {session.title}
+                    </span>
+                  </SidebarMenuButton>
+                  <SidebarMenuAction
+                    showOnHover
+                    title="تعديل اسم المحادثة"
+                    className="right-8"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openRenameDialog(session);
+                    }}
+                  >
+                    <Pencil />
+                  </SidebarMenuAction>
+                  <SidebarMenuAction
+                    showOnHover
+                    title="حذف المحادثة"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onDeleteSession(session.id);
+                    }}
+                  >
+                    <Trash2 />
+                  </SidebarMenuAction>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+      <Dialog
+        open={Boolean(renameSession)}
+        onOpenChange={(open) => {
+          if (!open) setRenameSession(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="font-['Noto_Sans_Arabic_Variable']">تعديل اسم المحادثة</DialogTitle>
+          </DialogHeader>
+          <Input
+            dir="rtl"
+            value={renameTitle}
+            onChange={(event) => setRenameTitle(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") saveSessionName();
+            }}
+          />
+          <Button type="button" onClick={saveSessionName}>حفظ</Button>
+        </DialogContent>
+      </Dialog>
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
