@@ -159,7 +159,7 @@ export function Login() {
                         type="button"
                         variant="link" 
                         className="p-0 font-medium text-primary hover:underline cursor-pointer"
-                        onClick={() => console.log("Redirect to registration")}
+                        onClick={() => navigate("/signup")}
                     >
                         سجل حسابك الآن
                     </Button>

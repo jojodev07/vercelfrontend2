@@ -21,13 +21,18 @@ export default function ChatDashboard() {
     clearSessionToLoad,
     sessionToDelete,
     clearSessionToDelete,
+    openRatingPrompt,
   } = useOutletContext();
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const firstResponseReceived = useRef(false);
+  const ratingTimerRef = useRef(null);
 
   const {name} = useContext(AuthContext);
+
+  useEffect(() => () => clearTimeout(ratingTimerRef.current), []);
 
 
   const loadTestMessages = () => {
@@ -134,6 +139,10 @@ export default function ChatDashboard() {
     AiResponse(request)
       .then(({data}) => {
         console.log(data);
+        if (!firstResponseReceived.current) {
+          firstResponseReceived.current = true;
+          ratingTimerRef.current = setTimeout(openRatingPrompt, 20000);
+        }
         setMessages(prev => 
           prev.map(msg => 
             msg.id === currentid

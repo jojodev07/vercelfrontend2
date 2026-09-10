@@ -53,12 +53,15 @@ export function AppSidebar({
   onNewSession,
   onRenameSession,
   onDeleteSession,
+  showRatingPrompt,
+  closeRatingPrompt,
 }) {
 
   const {userEmail, name} = useContext(AuthContext);
 
   const [message, setMessage] = useState("");
   const [msgBoolean, setMsgBoolean] = useState(false);
+  const [rating, setRating] = useState(0);
   const [renameSession, setRenameSession] = useState(null);
   const [renameTitle, setRenameTitle] = useState("");
 
@@ -74,6 +77,32 @@ export function AppSidebar({
     onRenameSession(renameSession.id, title);
     setRenameSession(null);
   };
+
+  const selectRating = (value) => {
+    setRating(value);
+    console.log("Rating:", value);
+  };
+
+  const stars = (value = rating, closeAfterSelect = false) => (
+    <div className="flex justify-center gap-1" dir="ltr">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Button
+          key={star}
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label={`${star} stars`}
+          onClick={() => {
+            selectRating(star);
+            if (closeAfterSelect) closeRatingPrompt();
+          }}
+          className="size-10 rounded-full hover:bg-amber-50 dark:hover:bg-amber-950/30"
+        >
+          <Star className={star <= value ? "size-6 fill-amber-400 text-amber-400" : "size-6 text-zinc-300 dark:text-zinc-600"} />
+        </Button>
+      ))}
+    </div>
+  );
 
   return (
     <Sidebar className="border-l-0 shadow-xl">
@@ -182,6 +211,7 @@ export function AppSidebar({
                     <p className="font-['Noto_Sans_Arabic_Variable'] text-center mb-1.5">إرسل تقييمك لنا</p>
                     </DialogTitle>
                   <DialogDescription className="space-y-2">
+                    {stars()}
                     <Textarea
                     placeholder="اترك نصائح هنا"
                     className="font-['Noto_Sans_Arabic_Variable'] rtl"
@@ -210,6 +240,16 @@ export function AppSidebar({
               </Dialog>
           </SidebarMenuItem>
         </SidebarMenu>
+        <Dialog open={showRatingPrompt} onOpenChange={(open) => !open && closeRatingPrompt()}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="font-['Noto_Sans_Arabic_Variable'] text-center">
+                كيف تقيّم إجابة المعلم الخبير؟
+              </DialogTitle>
+            </DialogHeader>
+            {stars(rating, true)}
+          </DialogContent>
+        </Dialog>
         <Separator></Separator>
         <Card>
           <CardHeader className="flex space-x-2 items-center">

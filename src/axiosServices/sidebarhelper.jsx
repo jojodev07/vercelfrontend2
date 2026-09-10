@@ -18,6 +18,7 @@ export function SidebarHelper() {
     });
     const [sessionToLoad, setSessionToLoad] = useState(null);
     const [sessionToDelete, setSessionToDelete] = useState(null);
+    const [showRatingPrompt, setShowRatingPrompt] = useState(false);
 
     useEffect(() => {
         localStorage.setItem("authify-chat-sessions", JSON.stringify(sessions));
@@ -66,6 +67,9 @@ export function SidebarHelper() {
                 clearSessionToLoad: () => setSessionToLoad(null),
                 sessionToDelete,
                 clearSessionToDelete: () => setSessionToDelete(null),
+                showRatingPrompt,
+                openRatingPrompt: () => setShowRatingPrompt(true),
+                closeRatingPrompt: () => setShowRatingPrompt(false),
             }}></Outlet>
             </div>
         </SidebarProvider>
