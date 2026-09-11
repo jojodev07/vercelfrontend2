@@ -4,7 +4,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-  SidebarGroupLabel,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
@@ -31,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState } from "react";
-import { sendDatatoSheet } from "../../axiosServices/axiosHelper";
+import { submitFeedback } from "../../axiosServices/axiosHelper";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -62,6 +61,8 @@ export function AppSidebar({
   const [message, setMessage] = useState("");
   const [msgBoolean, setMsgBoolean] = useState(false);
   const [rating, setRating] = useState(0);
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
   const [renameSession, setRenameSession] = useState(null);
   const [renameTitle, setRenameTitle] = useState("");
 
@@ -80,7 +81,25 @@ export function AppSidebar({
 
   const selectRating = (value) => {
     setRating(value);
-    console.log("Rating:", value);
+  };
+
+  const handleFeedbackSubmit = async () => {
+    const review = message.trim();
+
+    if (!rating || !review || isSubmittingFeedback) return;
+
+    setIsSubmittingFeedback(true);
+    setFeedbackError("");
+
+    try {
+      await submitFeedback(rating, review);
+      setMsgBoolean(true);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      setFeedbackError("تعذر إرسال التقييم. حاول مرة أخرى.");
+    } finally {
+      setIsSubmittingFeedback(false);
+    }
   };
 
   const stars = (value = rating, closeAfterSelect = false) => (
@@ -219,13 +238,15 @@ export function AppSidebar({
                     onChange={(e) => setMessage(e.target.value)}
                     >
                     </Textarea>
+                    {feedbackError && (
+                      <p className="text-center text-sm text-red-600" role="alert">
+                        {feedbackError}
+                      </p>
+                    )}
                     <Button
                     className="font-['Noto_Sans_Arabic_Variable'] block mx-auto"
-                    onClick={() => {
-                      console.log(message);
-                      setMsgBoolean(true);
-                      sendDatatoSheet(message);
-                    }}
+                    disabled={!rating || !message.trim() || isSubmittingFeedback}
+                    onClick={handleFeedbackSubmit}
                     >إرسال
                     </Button>
                   </DialogDescription>

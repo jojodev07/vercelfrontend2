@@ -15,6 +15,7 @@ import VerificationSuccessPage from './pages/congratulateVerify.jsx';
 import { ThemeProvider } from './contexts/DarkModeContext.jsx';
 import { OfficialFiles } from './pages/officialfiles.jsx';
 import { SidebarHelper } from './axiosServices/sidebarhelper.jsx';
+import { SecretReviewPage } from './pages/secretreviewpage.jsx';
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/files" element={<OfficialFiles/>} />
               </Route>
             </Route>
+                <Route path='/reviews' element={<SecretReviewPage/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/signup-finish" element={<RegisterSuccess />} />
