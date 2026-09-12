@@ -28,8 +28,8 @@ createRoot(document.getElementById('root')).render(
                 <Route index element={<App />}/>
                 <Route path="/files" element={<OfficialFiles/>} />
               </Route>
-            </Route>
                 <Route path='/reviews' element={<SecretReviewPage/>} />
+            </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/signup-finish" element={<RegisterSuccess />} />
