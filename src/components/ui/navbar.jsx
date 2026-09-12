@@ -37,21 +37,27 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import { useState } from "react";
 export function Navbar() {
 
     const {isAuthenticated, loading, userEmail, setUserEmail, setName} = useContext(AuthContext);
     const {isDarkMode, toggleTheme} = useContext(ThemeContext);
     const navigate = useNavigate();
+    const { isMobile, setOpenMobile } = useSidebar();
 
     const [step, setStep] = useState(1);
     const [open, setOpen] = useState(false);
 
     const handleOpenChange = (isOpen) => {
-    setOpen(isOpen)
-    if (!isOpen) setStep(1) 
-  }
+      setOpen(isOpen)
+      if (!isOpen) setStep(1)
+    }
+
+    const handleGuideFinish = () => {
+      handleOpenChange(false);
+      if (isMobile) setOpenMobile(true);
+    };
 
     const handleLogOut = () => {
 
@@ -85,7 +91,7 @@ export function Navbar() {
             </div> ) :
             <div className="flex gap-4 items-center">
 
-                    <Dialog>
+                    <Dialog open={open} onOpenChange={handleOpenChange}>
   <DialogTrigger asChild>
     <Badge
       render={<button type="button" />}
@@ -198,6 +204,12 @@ export function Navbar() {
             onClick={() => setStep(1)}
           >
             السابق
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={handleGuideFinish}
+          >
+            انتهاء
           </Button>
         </div>
       )}
