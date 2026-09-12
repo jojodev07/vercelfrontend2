@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getFeedback } from "../axiosServices/axiosHelper";
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card"
 
 export function SecretReviewPage() {
@@ -24,32 +21,37 @@ export function SecretReviewPage() {
                 setReviews(response.data);
                 console.log(reviews);
             }).catch((err) => {
-                console.error("Failed to fetch feedback:", error);
+                console.error("Failed to fetch feedback:", err);
                 setStatus("عذراً، حدث خطأ ما");
             });
 
     }, []);
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start pt-1.5">
-            <p className="pb-2 font-bold text-2xl font-['Noto_Sans_Arabic_Variable']">{status}</p>
-            <div className="space-y-4">
+        <main className="flex min-h-[calc(100vh-(--spacing(14)))] w-full min-w-0 flex-col items-center overflow-y-auto bg-zinc-50 px-4 pt-6 dark:bg-zinc-950" dir="rtl">
+            <header className="mb-6 w-full max-w-6xl text-center">
+                <p className="font-['Noto_Sans_Arabic_Variable'] text-2xl font-bold text-zinc-900 dark:text-zinc-50">{status}</p>
+                <p className="mt-2 font-['Noto_Sans_Arabic_Variable'] text-sm text-zinc-500 dark:text-zinc-400">
+                    آراء المستخدمين وتقييماتهم
+                </p>
+            </header>
+            <div className="flex max-w-md flex-col w-full max-w-6xl grid-cols-1 gap-4 pb-8 sm:grid-cols-2 xl:grid-cols-3">
             {reviews.map((item, index) => (
-                <Card key={index} className="max-w-md w-full">
+                <Card key={index} className="w-full min-w-0 max-w-none">
                     <CardHeader>
                         <CardTitle className="text-yellow-500 text-center text-2xl">
-                            {'★'.repeat(item.stars)}
-                            {'☆'.repeat(5 - item.stars)}
+                            {'★'.repeat(Number(item.stars) || 0)}
+                            {'☆'.repeat(Math.max(0, 5 - (Number(item.stars) || 0)))}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-center font-['Noto_Sans_Arabic_Variable'] text-xl">
-                            {item.review}
+                        <p className="wrap-break-word text-center font-['Noto_Sans_Arabic_Variable'] text-base leading-8 text-zinc-700 dark:text-zinc-300">
+                            {item.review?.trim() || "تقييم دون اقتراح"}
                         </p>
                     </CardContent>
                 </Card>
             ))}
             </div>
-        </div>
+        </main>
     )
 }

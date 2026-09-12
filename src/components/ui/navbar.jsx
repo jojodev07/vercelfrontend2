@@ -4,8 +4,8 @@ import { Badge } from "./badge"
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/DarkModeContext";
-import { LogOut } from "../../axiosServices/axiosHelper";
-import { School, ArrowUp, Car } from 'lucide-react';
+import { LogOut, submitFeedback } from "../../axiosServices/axiosHelper";
+import { School, ArrowUp, Car, Star } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,6 +48,10 @@ export function Navbar() {
 
     const [step, setStep] = useState(1);
     const [open, setOpen] = useState(false);
+    const [logoutReviewOpen, setLogoutReviewOpen] = useState(false);
+    const [logoutRating, setLogoutRating] = useState(0);
+    const [isSubmittingLogoutReview, setIsSubmittingLogoutReview] = useState(false);
+    const [logoutReviewError, setLogoutReviewError] = useState("");
 
     const handleOpenChange = (isOpen) => {
       setOpen(isOpen)
@@ -59,7 +63,7 @@ export function Navbar() {
       if (isMobile) setOpenMobile(true);
     };
 
-    const handleLogOut = () => {
+    const completeLogout = () => {
 
         try {  
             LogOut();
@@ -71,6 +75,37 @@ export function Navbar() {
             console.log(err);
         }
     };
+
+      const handleLogOut = () => {
+        const reviewKey = `authify-logout-review-submitted:${userEmail}`;
+
+        if (localStorage.getItem(reviewKey) === "true") {
+          completeLogout();
+          return;
+        }
+
+        setLogoutReviewError("");
+        setLogoutReviewOpen(true);
+      };
+
+      const handleLogoutReviewSubmit = async () => {
+        if (!logoutRating || isSubmittingLogoutReview) return;
+
+        setIsSubmittingLogoutReview(true);
+        setLogoutReviewError("");
+
+        try {
+          await submitFeedback(logoutRating, "");
+          localStorage.setItem(`authify-logout-review-submitted:${userEmail}`, "true");
+          setLogoutReviewOpen(false);
+          completeLogout();
+        } catch (error) {
+          console.error("Error submitting logout review:", error);
+          setLogoutReviewError("تعذر إرسال التقييم. حاول مرة أخرى.");
+        } finally {
+          setIsSubmittingLogoutReview(false);
+        }
+      };
 
     return (
         <nav className="w-screen flex items-center justify-around h-14  border-b border-gray-800 font-['Noto_Sans_Arabic_Variable']">
@@ -233,6 +268,49 @@ export function Navbar() {
                                 isDarkMode ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن"}</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+                      <Dialog
+                        open={logoutReviewOpen}
+                        onOpenChange={(isOpen) => {
+                          if (!isSubmittingLogoutReview) setLogoutReviewOpen(isOpen);
+                        }}
+                      >
+                        <DialogContent className="w-[calc(100%-2rem)] max-w-[400px]">
+                          <DialogHeader>
+                            <DialogTitle className="text-center font-['Noto_Sans_Arabic_Variable']">
+                              كيف تقيّم تجربتك؟
+                            </DialogTitle>
+                          </DialogHeader>
+                          <div className="flex flex-col items-center gap-4">
+                            <div className="flex justify-center gap-1" dir="ltr">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Button
+                                  key={star}
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon"
+                                  aria-label={`${star} stars`}
+                                  onClick={() => setLogoutRating(star)}
+                                  className="size-10 rounded-full hover:bg-amber-50 dark:hover:bg-amber-950/30"
+                                >
+                                  <Star className={star <= logoutRating ? "size-6 fill-amber-400 text-amber-400" : "size-6 text-zinc-300 dark:text-zinc-600"} />
+                                </Button>
+                              ))}
+                            </div>
+                            {logoutReviewError && (
+                              <p className="text-center text-sm text-red-600" role="alert">
+                                {logoutReviewError}
+                              </p>
+                            )}
+                            <Button
+                              className="font-['Noto_Sans_Arabic_Variable']"
+                              disabled={!logoutRating || isSubmittingLogoutReview}
+                              onClick={handleLogoutReviewSubmit}
+                            >
+                              إرسال وتسجيل الخروج
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
             </div>
             }
         </nav>
