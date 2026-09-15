@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { AiResponse } from './axiosServices/axiosHelper';
-import { Sparkles, ArrowUp, Paperclip, Smile, School } from 'lucide-react';
+import { ArrowUp, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from "../src/assets/Screenshot_2026-08-05_155526-removebg-preview.png"
 import { Button } from './components/ui/button';
@@ -27,6 +27,7 @@ export default function ChatDashboard() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [failedRequest, setFailedRequest] = useState(null);
   const firstResponseReceived = useRef(false);
   const ratingTimerRef = useRef(null);
 
@@ -91,13 +92,54 @@ export default function ChatDashboard() {
     )));
   }, [activeSessionId, messages, setSessions]);
 
+  const requestAiResponse = (request, assistantMessageId) => {
+    setLoading(true);
+    AiResponse(request)
+      .then(({data}) => {
+        console.log(data);
+        if (!firstResponseReceived.current) {
+          firstResponseReceived.current = true;
+          ratingTimerRef.current = setTimeout(openRatingPrompt, 20000);
+        }
+        setMessages(prev =>
+          prev.map(msg =>
+            msg.id === assistantMessageId
+          ? { ...msg, content: data.answer, error: false }
+          : msg
+          )
+        )
+      }).catch(e => {
+          setFailedRequest({ assistantMessageId, request });
+          setMessages(prev =>
+          prev.map(msg =>
+            msg.id === assistantMessageId
+          ? { ...msg, content: "عذرا، حدث خطأ ما. يرجى المحاولة لاحقاً", error: true }
+          : msg
+          )
+        )
+      }).finally(() => {
+        setLoading(false);
+      })
+  };
+
+  const handleRetry = () => {
+    if (!failedRequest || loading) return;
+
+    setFailedRequest(null);
+    setMessages((prev) => prev.map((msg) => (
+      msg.id === failedRequest.assistantMessageId
+        ? { ...msg, content: "انتظر قليلا...", error: false }
+        : msg
+    )));
+    requestAiResponse(failedRequest.request, failedRequest.assistantMessageId);
+  };
+
   const handleSend = async (e) => {
     e.preventDefault();
 
     const request = input;
     if (!request.trim()) return;
 
-    setLoading(true);
     const userMessage = {
       id: Date.now().toString(),
       role: 'user',
@@ -125,45 +167,20 @@ export default function ChatDashboard() {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-    
-    const currentid = (Date.now() + 1).toString();
+
+    const assistantMessageId = (Date.now() + 1).toString();
     setMessages((prev) => [
       ...prev,
       {
-        id: currentid,
+        id: assistantMessageId,
         role: 'assistant',
         content: "انتظر قليلا...",
+        error: false,
       },
     ]);
 
-    AiResponse(request)
-      .then(({data}) => {
-        console.log(data);
-        if (!firstResponseReceived.current) {
-          firstResponseReceived.current = true;
-          ratingTimerRef.current = setTimeout(openRatingPrompt, 20000);
-        }
-        setMessages(prev => 
-          prev.map(msg => 
-            msg.id === currentid
-          ? { ...msg, content: data.answer } // adjust to your response shape
-          : msg
-          )
-        )
+    requestAiResponse(request, assistantMessageId);
 
-      }).catch(e => {
-          setMessages(prev => 
-          prev.map(msg => 
-            msg.id === currentid
-          ? { ...msg, content: "عذرا، حدث خطأ ما. يرجى المحاولة لاحقاً" } // adjust to your response shape
-          : msg
-          )
-        )
-      }).finally(() => {
-        setLoading(false);
-      })
-
-    // Simulate AI response
   };
 
   const isHomeState = messages.length === 0;
@@ -218,6 +235,7 @@ export default function ChatDashboard() {
 
                   <Button
                     variant="outline"
+                    onClick={() => setInput('كيف أطور مهارات التفكير العليا لدى الطلبة؟')}
                     className="rounded-full border-green-300 dark:border-green-700 dark:text-green-300"
                   >
                     التعلم والتعليم
@@ -225,6 +243,7 @@ export default function ChatDashboard() {
 
                   <Button
                     variant="outline"
+                    onClick={() => setInput('ما هي أهم التشريعات التربوية التي يجب أن أعرفها؟')}
                     className="rounded-full border-blue-300 dark:border-blue-700 dark:text-blue-300"
                   >
                   التشريعات التربوية
@@ -232,6 +251,7 @@ export default function ChatDashboard() {
 
                   <Button
                     variant="outline"
+                    onClick={() => setInput('كيف أبني بيئة تعلم آمنة وداعمة؟')}
                     className="rounded-full border-purple-400 dark:border-purple-700 dark:text-purple-300"
                   >
                     بيئة التعلم
@@ -239,6 +259,7 @@ export default function ChatDashboard() {
 
                   <Button
                     variant="outline"
+                    onClick={() => setInput('ما أفضل الممارسات البيداغوجية داخل الصف؟')}
                     className="rounded-full border-gray-400 dark:border-zinc-600 dark:text-zinc-300"
                   >
                   البيداغوجية
@@ -246,6 +267,7 @@ export default function ChatDashboard() {
                   </Button>
                   <Button
                     variant="outline"
+                    onClick={() => setInput('كيف أساعد الطلبة على الاستعداد للحياة؟')}
                     className="rounded-full border-red-300 dark:border-red-700 dark:text-red-300"
                   >
                       التعلم للحياة 
@@ -288,6 +310,14 @@ export default function ChatDashboard() {
                           <Skeleton className="h-3.5 w-[20%] bg-zinc-200 dark:bg-zinc-800" />
                           <Skeleton className="h-3.5 w-[40%] bg-zinc-200 dark:bg-zinc-800" />
                         </div>
+                      ) : msg.error ? (
+                        <div className="space-y-3">
+                          <p>{msg.content}</p>
+                          <Button type="button" variant="outline" size="sm" onClick={handleRetry} disabled={loading}>
+                            <RefreshCw className="ml-2 h-4 w-4" />
+                            إعادة المحاولة
+                          </Button>
+                        </div>
                       ) : msg.role === 'assistant' ? (
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                       ) : (
@@ -320,7 +350,7 @@ export default function ChatDashboard() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="إسالني..."
+                placeholder="اسألني..."
                 className="flex-1 bg-transparent px-3 py-2 text-sm outline-none placeholder:text-zinc-400"
               />
 
@@ -329,6 +359,7 @@ export default function ChatDashboard() {
                 <button
                   type="submit"
                   disabled={!input.trim() || loading === true}
+                  aria-label="إرسال السؤال"
                   className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1E3A8A] text-zinc-50 transition-all disabled:opacity-30 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 cursor-pointer disabled:cursor-default"
                 >
                   <ArrowUp className="h-4 w-4 stroke-[2.5]" />

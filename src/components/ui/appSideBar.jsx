@@ -124,7 +124,7 @@ export function AppSidebar({
   );
 
   return (
-    <Sidebar className="border-l-0 shadow-xl">
+    <Sidebar side="right" dir="rtl" className="border-r-0 shadow-xl">
       <SidebarHeader className="border-b border-zinc-200/80 px-4 py-5 dark:border-zinc-800">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2">
@@ -156,7 +156,7 @@ export function AppSidebar({
               {sessions.map((session) => (
                 <SidebarMenuItem key={session.id}>
                   <SidebarMenuButton
-                    className="h-10 rounded-xl px-3 text-right hover:bg-emerald-50 hover:text-emerald-800 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
+                    className="h-10 rounded-xl py-2 pl-16 pr-3 text-right hover:bg-emerald-50 hover:text-emerald-800 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
                     onClick={() => onSessionSelect(session.id)}
                     title={session.title}
                   >
@@ -168,7 +168,7 @@ export function AppSidebar({
                   <SidebarMenuAction
                     showOnHover
                     title="تعديل اسم المحادثة"
-                    className="right-8"
+                    className="left-8 right-auto bg-sidebar"
                     onClick={(event) => {
                       event.stopPropagation();
                       openRenameDialog(session);
@@ -179,6 +179,7 @@ export function AppSidebar({
                   <SidebarMenuAction
                     showOnHover
                     title="حذف المحادثة"
+                    className="left-1 right-auto bg-sidebar"
                     onClick={(event) => {
                       event.stopPropagation();
                       onDeleteSession(session.id);

@@ -58,7 +58,7 @@ export function SidebarHelper() {
                 onRenameSession={renameSession}
                 onDeleteSession={deleteSession}
             ></AppSidebar>
-            <div>
+            <div className="min-w-0 flex-1">
             <Navbar></Navbar>
             <Outlet context={{
                 sessions,

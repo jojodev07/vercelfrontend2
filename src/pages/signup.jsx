@@ -33,8 +33,8 @@ const register = async (signUpData) => {
 
 function getAxiosError(error) {
     const errorObj = {};
-    const errData = error.response.data;
-    errorObj.email = errData.message;
+    const returnedMessage = error.response?.data?.message || error.response?.data;
+    errorObj.email = returnedMessage || "تعذر إنشاء الحساب. يرجى المحاولة مرة أخرى.";
     return errorObj;
 }
 
@@ -75,12 +75,11 @@ export function Signup() {
                 // log in user directly, no verification is needed.
                 auth.setUserEmail(email);
                 auth.setName(name);
-                navigate(`/`);
+                navigate(`/chat`);
 
 
             } catch (error) {
                 console.log(error);
-                console.log(error.response.data);
                 // simple error handling: (email is used)
                 const returnedError = getAxiosError(error);
                 setErrors(returnedError);

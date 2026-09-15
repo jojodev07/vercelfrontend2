@@ -4,13 +4,10 @@ import { AuthContext } from '../contexts/AuthContext';
 import { VerifyAuthToken } from './axiosHelper';
 
 const NoLoginCheck = () => {
-    const {isAuthenticated, isLoading} = useContext(AuthContext);
-    if (!isAuthenticated) {
-        return <Navigate to={"/login"} replace></Navigate>
-    }
+    const {isAuthenticated, loading} = useContext(AuthContext);
 
-    if (isLoading) return <></>;
-    return !isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+    if (loading) return null;
+    return isAuthenticated ? <Navigate to="/" replace /> : <Outlet />;
 }
 
 export default NoLoginCheck;

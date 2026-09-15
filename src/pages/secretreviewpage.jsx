@@ -11,6 +11,7 @@ export function SecretReviewPage() {
 
     const [status, setStatus] = useState("التقييمات الموجودة حاليا");
     const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getFeedback()
@@ -19,11 +20,10 @@ export function SecretReviewPage() {
                 console.log("Data received:", response);
                 setStatus("التقييمات الموجودة حاليا");
                 setReviews(response.data);
-                console.log(reviews);
             }).catch((err) => {
                 console.error("Failed to fetch feedback:", err);
                 setStatus("عذراً، حدث خطأ ما");
-            });
+            }).finally(() => setLoading(false));
 
     }, []);
 
@@ -35,7 +35,11 @@ export function SecretReviewPage() {
                     آراء المستخدمين وتقييماتهم
                 </p>
             </header>
-            <div className="flex max-w-md flex-col w-full max-w-6xl grid-cols-1 gap-4 pb-8 sm:grid-cols-2 xl:grid-cols-3">
+            {loading && <p className="text-sm text-zinc-500">جارٍ تحميل التقييمات...</p>}
+            {!loading && reviews.length === 0 && (
+                <p className="text-sm text-zinc-500">لا توجد تقييمات بعد.</p>
+            )}
+            <div className="grid w-full max-w-6xl grid-cols-1 gap-4 pb-8 sm:grid-cols-2 xl:grid-cols-3">
             {reviews.map((item, index) => (
                 <Card key={index} className="w-full min-w-0 max-w-none">
                     <CardHeader>

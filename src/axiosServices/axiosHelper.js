@@ -39,15 +39,8 @@ export async function VerifyAuthToken() {
 }
 // pass a navigate hook from navbar.
 export async function LogOut() {
-
-        return axiosInstance.post("/logout")
-            .then(result => {
-                console.log(result.data.message);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
+    const result = await axiosInstance.post("/logout");
+    return result.data;
 }
 
 // organization: .then .catch used in parent component.

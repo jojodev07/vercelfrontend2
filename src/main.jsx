@@ -16,6 +16,10 @@ import { ThemeProvider } from './contexts/DarkModeContext.jsx';
 import { OfficialFiles } from './pages/officialfiles.jsx';
 import { SidebarHelper } from './axiosServices/sidebarhelper.jsx';
 import { SecretReviewPage } from './pages/secretreviewpage.jsx';
+import { LandingPage } from './pages/landingPage.jsx';
+
+document.documentElement.lang = 'ar';
+document.documentElement.dir = 'rtl';
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
@@ -23,9 +27,10 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<RootLayout />}>
+            <Route index element={<LandingPage />} />
             <Route element={<PersistLogin/>}>
               <Route element={<SidebarHelper/>}>
-                <Route index element={<App />}/>
+                <Route path="/chat" element={<App />}/>
                 <Route path="/files" element={<OfficialFiles/>} />
               </Route>
                 <Route path='/reviews' element={<SecretReviewPage/>} />

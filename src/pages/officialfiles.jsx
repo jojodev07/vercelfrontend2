@@ -13,7 +13,7 @@ export function OfficialFiles() {
     { id: 4, name: "تعليمات الدوام", size: "97 KB", division: "وزارة التربية والتعليم", date: "2013", hrefTag: "/documents/t3lematt.pdf" },
     { id: 5, name: "رتب المعلمين", size: "177 KB", division: "وزارة التربية والتعليم", date: "2002", hrefTag: "/documents/rotabb.pdf" },
     { id: 6, name: "ميثاق مهنة التعليم", size: "1.6 MB", division: "وزارة التربية والتعليم", date: "2020", hrefTag: "/documents/methaqq.pdf" },
-    { id: 5, name: "الإجازات التربوية", size: "166 KB", division: "وزارة التربية والتعليم", date: "1975", hrefTag: "/documents/ijazatt.pdf" }
+    { id: 7, name: "الإجازات التربوية", size: "166 KB", division: "وزارة التربية والتعليم", date: "1975", hrefTag: "/documents/ijazatt.pdf" }
     ];
 
     return (
@@ -54,13 +54,13 @@ export function OfficialFiles() {
             <a href={`${doc.hrefTag}`} className="w-full sm:w-auto">
                 <Button size="sm" variant="outline" className="h-9 px-3 gap-1.5 w-full text-muted-foreground">
                     <ExternalLink className="h-3.5 w-3.5" />
-                        Preview
+                        معاينة
                 </Button>
             </a>
             <a href={`${doc.hrefTag}`} download className="w-full sm:w-auto">
                 <Button size="sm" className="h-9 px-4 gap-1.5 w-full sm:w-auto">
                     <Download className="h-3.5 w-3.5" />
-                    Download
+                    تحميل
                 </Button>
             </a>
             </div>

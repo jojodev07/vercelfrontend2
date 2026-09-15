@@ -4,7 +4,12 @@ import { AuthContext } from '../contexts/AuthContext';
 import { VerifyAuthToken } from './axiosHelper';
 
 const PersistLogin = () => {
-    const {isAuthenticated, isLoading} = useContext(AuthContext);
+    const {isAuthenticated, loading} = useContext(AuthContext);
+
+    if (loading) {
+        return null;
+    }
+
     if (!isAuthenticated) {
         return <Navigate to={"/login"} replace></Navigate>;
     } else {
