@@ -25,6 +25,16 @@ const axiosInstance = axios.create({
     },
     withCredentials:true
 })
+function getAxiosError(error) {
+    const returnedMessage = error.response?.data?.message || error.response?.data;
+
+    return {
+        email: returnedMessage === "Bad credentials"
+            ? "المعلومات المدخلة خاطئة، يرجى التأكد منها"
+            : returnedMessage || "Unable to log in. Please check your email and password."
+    };
+}
+
 
 
 export function Login() {
@@ -35,12 +45,18 @@ export function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState("");
+    const [errors, setErrors] = useState({});
 
     const validateBlank = () => {
         const errors = {};
-        if (!email.trim()) errors.email = "Email is required.";
-        if (!password.trim()) errors.password = "Password is required";
+        const normalizedEmail = email.trim();
+
+        if (!normalizedEmail) {
+            errors.email = "يرجى إدخال الايميل";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+            errors.email = "يرجى ادخال ايميل مقبول";
+        }
+        if (!password.trim()) errors.password = "كلمة السر مطلوبة";
 
         return errors;
     }
@@ -56,7 +72,7 @@ export function Login() {
         }
 
         try {
-            const res = await axiosInstance.post("/auth/login", {email, password}); // loginData contains .email and .password.
+            const res = await axiosInstance.post("/auth/login", {email: email.trim(), password}); // loginData contains .email and .password.
             // Check whether we Have a jwt or a uuid. (Can't have both!)
             if (res.data.promptUUID) {
                     navigate(`/signup-finish?token=${res.data.promptUUID}`);
@@ -70,13 +86,8 @@ export function Login() {
 
             console.log(res);
         } catch (err) {
-
-            console.log(err);                 // AxiosError
-            console.log(err.response.status); // 401
-            console.log(err.response.data);   // JSON body from your Spring app
-            console.log(err.response.headers);
-
-            
+            console.log(err);
+            setErrors(getAxiosError(err));
         }
     }
 
@@ -94,9 +105,12 @@ export function Login() {
                 </CardHeader>
 
                 <CardContent className="my-4">
-                    {(errors.email != null && errors.password != null) &&
+                    {errors.email &&
                         <p className="text-left text-lg text-red-500 tracking-tighter font-medium box-border p-2 pl-0">
-                            ⓘ&ensp;All fields are required!</p>}
+                            ⓘ&ensp;{errors.email}</p>}
+                    {errors.password &&
+                        <p className="text-left text-lg text-red-500 tracking-tighter font-medium box-border p-2 pl-0">
+                            ⓘ&ensp;{errors.password}</p>}
                     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                         <div className="flex flex-col gap-4">
                             <Label htmlFor="email">Email address</Label>
