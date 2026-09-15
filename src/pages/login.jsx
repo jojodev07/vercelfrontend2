@@ -111,10 +111,10 @@ export function Login() {
 
                 <CardContent className="my-4">
                     {errors.email &&
-                        <p className="text-left text-lg text-red-500 tracking-tighter font-medium box-border p-2 pl-0">
+                        <p className="text-lg text-red-500 tracking-tighter font-medium box-border p-2 pl-0 text-center">
                             ⓘ&ensp;{errors.email}</p>}
                     {errors.password &&
-                        <p className="text-left text-lg text-red-500 tracking-tighter font-medium box-border p-2 pl-0">
+                        <p className="text-center text-lg text-red-500 tracking-tighter font-medium box-border p-2 pl-0">
                             ⓘ&ensp;{errors.password}</p>}
                     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                         <div className="flex flex-col gap-4">
