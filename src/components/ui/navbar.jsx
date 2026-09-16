@@ -108,23 +108,23 @@ export function Navbar() {
       };
 
     return (
-        <nav className="w-screen flex items-center justify-around h-14  border-b border-gray-800 font-['Noto_Sans_Arabic_Variable']">
-            <div className="font-semibold flex gap-2 items-center">
+        <nav className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-zinc-200/80 bg-white/85 px-4 shadow-sm backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/85 font-['Noto_Sans_Arabic_Variable']">
+          <div className="flex items-center gap-2 font-semibold">
                 <SidebarTrigger className="items-center"></SidebarTrigger>
-                <span className="tracking-tight text-base">المعلم الخبير</span>
+            <span className="tracking-tight text-sm sm:text-base">المعلم الخبير</span>
             </div>
 
             {!isAuthenticated ?
             
-            ( <div className="flex gap-4">
+            ( <div className="flex items-center gap-2">
                 <NavLink to={"/login"}>
-                    <Button size={'lg'} variant="outline" className="cursor-pointer">سجل الدخول</Button>
+                <Button size="sm" variant="outline" className="cursor-pointer">سجل الدخول</Button>
                 </NavLink>
                 <NavLink to={"/signup"}>
-                    <Button size={'lg'} variant="outline" className="cursor-pointer">حساب جديد</Button>
+                <Button size="sm" className="cursor-pointer">حساب جديد</Button>
                 </NavLink>
             </div> ) :
-            <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-2">
 
                     <Dialog open={open} onOpenChange={handleOpenChange}>
   <DialogTrigger asChild>
@@ -256,7 +256,7 @@ export function Navbar() {
                             <Badge
                                 render={<button type="button" />}
                                 variant="destructive"
-                                className="cursor-pointer bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-300"
+                                className="max-w-[180px] cursor-pointer truncate bg-green-100 text-green-800 dark:bg-green-900/70 dark:text-green-300"
                             >
                                 {userEmail}
                             </Badge>

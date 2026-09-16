@@ -1,14 +1,39 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { AiResponse } from './axiosServices/axiosHelper';
-import { ArrowUp, RefreshCw } from 'lucide-react';
+import { ArrowUp, Bot, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from "../src/assets/Screenshot_2026-08-05_155526-removebg-preview.png"
 import { Button } from './components/ui/button';
 import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
-import Markdown from 'react-markdown';
 import { useOutletContext } from "react-router-dom";
+
+const assistantMarkdownComponents = {
+  h1: ({ children }) => <h1 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-100">{children}</h1>,
+  h2: ({ children }) => <h2 className="mb-2 mt-4 text-base font-bold text-zinc-900 dark:text-zinc-100">{children}</h2>,
+  h3: ({ children }) => <h3 className="mb-2 mt-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">{children}</h3>,
+  p: ({ children }) => <p className="mb-3 last:mb-0">{children}</p>,
+  ul: ({ children }) => <ul className="mb-3 list-disc space-y-1 pr-5 last:mb-0">{children}</ul>,
+  ol: ({ children }) => <ol className="mb-3 list-decimal space-y-1 pr-5 last:mb-0">{children}</ol>,
+  li: ({ children }) => <li className="pr-1">{children}</li>,
+  blockquote: ({ children }) => (
+    <blockquote className="my-3 border-r-4 border-emerald-500 bg-emerald-50/70 px-3 py-2 text-zinc-600 dark:bg-emerald-950/30 dark:text-zinc-300">
+      {children}
+    </blockquote>
+  ),
+  code: ({ children, className }) => (
+    <code className={className || "rounded bg-zinc-100 px-1.5 py-0.5 text-[0.9em] text-emerald-700 dark:bg-zinc-800 dark:text-emerald-300"}>
+      {children}
+    </code>
+  ),
+  pre: ({ children }) => (
+    <pre className="my-3 overflow-x-auto rounded-xl bg-zinc-950 p-3 text-left text-xs leading-relaxed text-zinc-100 dark:bg-black">
+      {children}
+    </pre>
+  ),
+  hr: () => <hr className="my-4 border-zinc-200 dark:border-zinc-700" />,
+};
 
 
 
@@ -280,7 +305,7 @@ export default function ChatDashboard() {
         {/* Conversational Timeline Feed */}
         {/* Takes up the remaining upper page space only when messages exist */}
         {!isHomeState && (
-          <main className="flex-1 overflow-y-auto px-4 py-8">
+          <main className="chat-scrollbar flex-1 overflow-y-auto px-4 py-8">
             <div className="mx-auto max-w-2xl space-y-6">
               {messages.map((msg, index) => {
                 // Check if this specific item is the current pending message
@@ -292,10 +317,15 @@ export default function ChatDashboard() {
                 return (
                   <div
                     key={msg.id}
-                    className={`flex w-full ${
+                    className={`flex w-full gap-3 ${
                       msg.role === 'user' ? 'justify-end' : 'justify-start'
                     }`}
                   >
+                    {msg.role === 'assistant' && (
+                      <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                        <Bot className="h-4 w-4" aria-hidden="true" />
+                      </div>
+                    )}
                     <div
                       className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
                         msg.role === 'user'
@@ -319,7 +349,14 @@ export default function ChatDashboard() {
                           </Button>
                         </div>
                       ) : msg.role === 'assistant' ? (
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        <div className="min-w-0">
+                          <div className="mb-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                            المعلم الخبير
+                          </div>
+                          <ReactMarkdown components={assistantMarkdownComponents}>
+                            {msg.content}
+                          </ReactMarkdown>
+                        </div>
                       ) : (
                         msg.content
                       )}
