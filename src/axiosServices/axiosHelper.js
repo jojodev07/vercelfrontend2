@@ -10,7 +10,7 @@ export const axiosInstance = axios.create({
 })
 
 export const AIaxiosInstance = axios.create({
-    baseURL:"https://13.60.68.221.sslip.io/ai/v1/query",
+    baseURL:"https://13.60.68.221.sslip.io",
     timeout:20000,
     headers : {
         "Content-Type":"application/json"
