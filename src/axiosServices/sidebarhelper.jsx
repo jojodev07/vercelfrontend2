@@ -16,6 +16,9 @@ export function SidebarHelper() {
             return [];
         }
     });
+    const [displayName, setDisplayName] = useState(() => (
+        localStorage.getItem("authify-display-name") || "زائر"
+    ));
     const [sessionToLoad, setSessionToLoad] = useState(null);
     const [sessionToDelete, setSessionToDelete] = useState(null);
     const [showRatingPrompt, setShowRatingPrompt] = useState(false);
@@ -23,6 +26,10 @@ export function SidebarHelper() {
     useEffect(() => {
         localStorage.setItem("authify-chat-sessions", JSON.stringify(sessions));
     }, [sessions]);
+
+    useEffect(() => {
+        localStorage.setItem("authify-display-name", displayName);
+    }, [displayName]);
 
     const createSession = () => {
         const session = {
@@ -57,9 +64,11 @@ export function SidebarHelper() {
                 onNewSession={createSession}
                 onRenameSession={renameSession}
                 onDeleteSession={deleteSession}
+                name={displayName}
+                onNameChange={setDisplayName}
             ></AppSidebar>
             <div className="min-w-0 flex-1">
-            <Navbar></Navbar>
+            <Navbar name={displayName}></Navbar>
             <Outlet context={{
                 sessions,
                 setSessions,

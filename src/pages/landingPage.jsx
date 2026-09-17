@@ -1,17 +1,10 @@
 import { ArrowLeft, BookOpen, FileText, Sparkles } from "lucide-react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/Screenshot_2026-08-05_155526-removebg-preview.png";
 import { Button } from "../components/ui/button";
 
 export function LandingPage() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
-
-  if (isAuthenticated) {
-    return <Navigate to="/chat" replace />;
-  }
 
   return (
     <main className="min-h-screen overflow-hidden bg-zinc-50 text-zinc-900" dir="rtl">
@@ -26,11 +19,11 @@ export function LandingPage() {
           <span className="hidden text-sm font-bold sm:block">المعلم الخبير</span>
         </button>
         <div className="flex items-center gap-2 sm:gap-3">
-          <Button variant="ghost" onClick={() => navigate("/login")}>
-            تسجيل الدخول
+          <Button variant="ghost" onClick={() => navigate("/chat")}>
+            افتح المحادثة
           </Button>
           <Button
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/chat")}
             className="bg-[#1E3A8A] text-white hover:bg-[#1E3A8A]"
           >
             ابدأ الآن
@@ -58,7 +51,7 @@ export function LandingPage() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
                 size="lg"
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate("/chat")}
                 className="h-12 rounded-xl bg-[#1E3A8A] px-7 text-base text-white shadow-lg shadow-blue-900/20 hover:bg-[#1E3A8A]"
               >
                 اكتشف مساحتك
@@ -67,10 +60,10 @@ export function LandingPage() {
               <Button
                 size="lg"
                 variant="ghost"
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/chat")}
                 className="h-12 justify-center px-5 text-[#1E3A8A] hover:bg-blue-100"
               >
-                لدي حساب بالفعل
+                ابدأ المحادثة
               </Button>
             </div>
             <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-500">

@@ -10,7 +10,7 @@ export const axiosInstance = axios.create({
 })
 
 export const AIaxiosInstance = axios.create({
-    baseURL:"https://pythonai-2ul4.onrender.com",
+    baseURL:"http://13.60.68.221:8000",
     timeout:20000,
     headers : {
         "Content-Type":"application/json"

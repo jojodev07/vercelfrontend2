@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect, useContext } from 'react';
-import { AuthContext } from './contexts/AuthContext';
+import { useState, useRef, useEffect } from 'react';
 import { AiResponse } from './axiosServices/axiosHelper';
 import { ArrowUp, Bot, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -55,8 +54,6 @@ export default function ChatDashboard() {
   const [failedRequest, setFailedRequest] = useState(null);
   const firstResponseReceived = useRef(false);
   const ratingTimerRef = useRef(null);
-
-  const {name} = useContext(AuthContext);
 
   useEffect(() => () => clearTimeout(ratingTimerRef.current), []);
 

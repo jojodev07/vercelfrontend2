@@ -1,31 +1,17 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Button } from "./button";
 import { Badge } from "./badge"
-import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/DarkModeContext";
-import { LogOut, submitFeedback } from "../../axiosServices/axiosHelper";
-import { School, ArrowUp, Car, Star } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -39,19 +25,13 @@ import {
 } from "@/components/ui/carousel"
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import { useState } from "react";
-export function Navbar() {
+export function Navbar({ name = "زائر" }) {
 
-    const {isAuthenticated, loading, userEmail, setUserEmail, setName} = useContext(AuthContext);
     const {isDarkMode, toggleTheme} = useContext(ThemeContext);
-    const navigate = useNavigate();
     const { isMobile, setOpenMobile } = useSidebar();
 
     const [step, setStep] = useState(1);
     const [open, setOpen] = useState(false);
-    const [logoutReviewOpen, setLogoutReviewOpen] = useState(false);
-    const [logoutRating, setLogoutRating] = useState(0);
-    const [isSubmittingLogoutReview, setIsSubmittingLogoutReview] = useState(false);
-    const [logoutReviewError, setLogoutReviewError] = useState("");
 
     const handleOpenChange = (isOpen) => {
       setOpen(isOpen)
@@ -63,50 +43,6 @@ export function Navbar() {
       if (isMobile) setOpenMobile(true);
     };
 
-    const completeLogout = () => {
-
-        try {  
-            LogOut();
-            // if success:
-            setUserEmail(null);
-            setName(null);
-            navigate("/login");
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-      const handleLogOut = () => {
-        const reviewKey = `authify-logout-review-submitted:${userEmail}`;
-
-        if (localStorage.getItem(reviewKey) === "true") {
-          completeLogout();
-          return;
-        }
-
-        setLogoutReviewError("");
-        setLogoutReviewOpen(true);
-      };
-
-      const handleLogoutReviewSubmit = async () => {
-        if (!logoutRating || isSubmittingLogoutReview) return;
-
-        setIsSubmittingLogoutReview(true);
-        setLogoutReviewError("");
-
-        try {
-          await submitFeedback(logoutRating, "");
-          localStorage.setItem(`authify-logout-review-submitted:${userEmail}`, "true");
-          setLogoutReviewOpen(false);
-          completeLogout();
-        } catch (error) {
-          console.error("Error submitting logout review:", error);
-          setLogoutReviewError("تعذر إرسال التقييم. حاول مرة أخرى.");
-        } finally {
-          setIsSubmittingLogoutReview(false);
-        }
-      };
-
     return (
         <nav className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-zinc-200/80 bg-white/85 px-4 shadow-sm backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/85 font-['Noto_Sans_Arabic_Variable']">
           <div className="flex items-center gap-2 font-semibold">
@@ -114,19 +50,8 @@ export function Navbar() {
             <span className="tracking-tight text-sm sm:text-base">المعلم الخبير</span>
             </div>
 
-            {!isAuthenticated ?
-            
-            ( <div className="flex items-center gap-2">
-                <NavLink to={"/login"}>
-                <Button size="sm" variant="outline" className="cursor-pointer">سجل الدخول</Button>
-                </NavLink>
-                <NavLink to={"/signup"}>
-                <Button size="sm" className="cursor-pointer">حساب جديد</Button>
-                </NavLink>
-            </div> ) :
             <div className="flex items-center gap-2">
-
-                    <Dialog open={open} onOpenChange={handleOpenChange}>
+              <Dialog open={open} onOpenChange={handleOpenChange}>
   <DialogTrigger asChild>
     <Badge
       render={<button type="button" />}
@@ -251,68 +176,23 @@ export function Navbar() {
     </div>
   </DialogContent>
 </Dialog>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger render={
-                            <Badge
-                                render={<button type="button" />}
-                                variant="destructive"
-                                className="max-w-[180px] cursor-pointer truncate bg-green-100 text-green-800 dark:bg-green-900/70 dark:text-green-300"
-                            >
-                                {userEmail}
-                            </Badge>
-                            }>
-                        </DropdownMenuTrigger>
-                          <DropdownMenuContent className="font-['Noto_Sans_Arabic_Variable']">
-                            <DropdownMenuItem onClick={handleLogOut}>تسجيل الخروج</DropdownMenuItem>
-                            <DropdownMenuItem onClick={toggleTheme}>{
-                                isDarkMode ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن"}</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                      <Dialog
-                        open={logoutReviewOpen}
-                        onOpenChange={(isOpen) => {
-                          if (!isSubmittingLogoutReview) setLogoutReviewOpen(isOpen);
-                        }}
-                      >
-                        <DialogContent className="w-[calc(100%-2rem)] max-w-[400px]">
-                          <DialogHeader>
-                            <DialogTitle className="text-center font-['Noto_Sans_Arabic_Variable']">
-                              كيف تقيّم تجربتك؟
-                            </DialogTitle>
-                          </DialogHeader>
-                          <div className="flex flex-col items-center gap-4">
-                            <div className="flex justify-center gap-1" dir="ltr">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Button
-                                  key={star}
-                                  type="button"
-                                  variant="ghost"
-                                  size="icon"
-                                  aria-label={`${star} stars`}
-                                  onClick={() => setLogoutRating(star)}
-                                  className="size-10 rounded-full hover:bg-amber-50 dark:hover:bg-amber-950/30"
-                                >
-                                  <Star className={star <= logoutRating ? "size-6 fill-amber-400 text-amber-400" : "size-6 text-zinc-300 dark:text-zinc-600"} />
-                                </Button>
-                              ))}
-                            </div>
-                            {logoutReviewError && (
-                              <p className="text-center text-sm text-red-600" role="alert">
-                                {logoutReviewError}
-                              </p>
-                            )}
-                            <Button
-                              className="font-['Noto_Sans_Arabic_Variable']"
-                              disabled={!logoutRating || isSubmittingLogoutReview}
-                              onClick={handleLogoutReviewSubmit}
-                            >
-                              إرسال وتسجيل الخروج
-                            </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-            </div>
-            }
-        </nav>
+          <DropdownMenu>
+            <DropdownMenuTrigger render={
+              <Badge
+                render={<button type="button" />}
+                variant="destructive"
+                className="cursor-pointer bg-green-100 text-green-800 dark:bg-green-900/70 dark:text-green-300"
+              >
+                {name}
+              </Badge>
+              }>
+            </DropdownMenuTrigger>
+              <DropdownMenuContent className="font-['Noto_Sans_Arabic_Variable']">
+              <DropdownMenuItem onClick={toggleTheme}>{
+                isDarkMode ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن"}</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+      </div>
+    </nav>
     )
 }

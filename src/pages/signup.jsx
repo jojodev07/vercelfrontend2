@@ -46,6 +46,7 @@ export function Signup() {
     const [email, useEmail] = useState("");
     const [password, usePassword] = useState("");
     const [errors, setErrors] = useState({});
+    const [isRequesting, setIsRequesting] = useState(false);
 
     const navigate = useNavigate();
 
@@ -70,6 +71,7 @@ export function Signup() {
             
             try {
                 // register user.
+                setIsRequesting(true);
                 const result = await register({name, email, password});
 
                 // log in user directly, no verification is needed.
@@ -83,6 +85,8 @@ export function Signup() {
                 // simple error handling: (email is used)
                 const returnedError = getAxiosError(error);
                 setErrors(returnedError);
+            } finally {
+                setIsRequesting(false);
             }
         }
     }
@@ -139,18 +143,22 @@ export function Signup() {
                             />
                         </div>
 
-                        <Button type="submit" className="w-full mt-2 font-['Noto_Sans_Arabic_Variable'] bg-[#059669] hover:bg-[#059669]">
+                        <Button
+                        type="submit"
+                        disabled={isRequesting}
+                        className="w-full mt-2 font-['Noto_Sans_Arabic_Variable'] bg-[#059669] hover:bg-[#059669] disabled:bg-gray-400">
                             سجّل حسابك
                         </Button>
                     </form>
                 </CardContent>
 
                 <CardFooter>
-                    <NavLink to={"http://localhost:8080/oauth2/login/google"} className={"w-full px-4"}>
+                    <NavLink to={"https://springbackend-zei7.onrender.com/oauth2/login/google"} className={"w-full px-4"}>
                         <Button 
                             type="button"
                             variant="outline" 
                             className="w-full flex items-center justify-center gap-2 rounded-full font-['Noto_Sans_Arabic_Variable']"
+                            disabled={isRequesting}
                             onClick={() => {}}
                         >
                             <svg className="h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://w3.org" viewBox="0 0 488 512">

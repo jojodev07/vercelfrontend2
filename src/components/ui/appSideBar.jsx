@@ -28,8 +28,7 @@ import { MessageSquare, Star, Plus, Pencil, Trash2 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { AuthContext } from "../../contexts/AuthContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { submitFeedback } from "../../axiosServices/axiosHelper";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -52,11 +51,11 @@ export function AppSidebar({
   onNewSession,
   onRenameSession,
   onDeleteSession,
+  name,
+  onNameChange,
   showRatingPrompt,
   closeRatingPrompt,
 }) {
-
-  const {userEmail, name} = useContext(AuthContext);
 
   const [message, setMessage] = useState("");
   const [msgBoolean, setMsgBoolean] = useState(false);
@@ -65,6 +64,8 @@ export function AppSidebar({
   const [feedbackError, setFeedbackError] = useState("");
   const [renameSession, setRenameSession] = useState(null);
   const [renameTitle, setRenameTitle] = useState("");
+  const [nameDialogOpen, setNameDialogOpen] = useState(false);
+  const [nameInput, setNameInput] = useState(name);
 
   const openRenameDialog = (session) => {
     setRenameSession(session);
@@ -77,6 +78,14 @@ export function AppSidebar({
 
     onRenameSession(renameSession.id, title);
     setRenameSession(null);
+  };
+
+  const saveDisplayName = () => {
+    const nextName = nameInput.trim();
+    if (!nextName) return;
+
+    onNameChange(nextName);
+    setNameDialogOpen(false);
   };
 
   const selectRating = (value) => {
@@ -274,7 +283,13 @@ export function AppSidebar({
         </Dialog>
         <Separator></Separator>
         <Card>
-          <CardHeader className="flex space-x-2 items-center">
+          <CardHeader
+            className="flex cursor-pointer items-center space-x-2"
+            onClick={() => {
+              setNameInput(name);
+              setNameDialogOpen(true);
+            }}
+          >
             <div>
               <Avatar>
                 <AvatarImage src="" className="w-2 h-2"/>
@@ -288,12 +303,29 @@ export function AppSidebar({
                 variant="destructive"
                 className="cursor-pointer bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-300"
                 >
-                {userEmail}
+                استخدام مجاني
                 </Badge>
                 </CardTitle>
             </div>
           </CardHeader>
         </Card>
+        <Dialog open={nameDialogOpen} onOpenChange={setNameDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="font-['Noto_Sans_Arabic_Variable']">ما الاسم الذي تفضله؟</DialogTitle>
+            </DialogHeader>
+            <Input
+              dir="rtl"
+              value={nameInput}
+              onChange={(event) => setNameInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") saveDisplayName();
+              }}
+              autoFocus
+            />
+            <Button type="button" onClick={saveDisplayName}>حفظ الاسم</Button>
+          </DialogContent>
+        </Dialog>
       </SidebarFooter>
     </Sidebar>
   )
