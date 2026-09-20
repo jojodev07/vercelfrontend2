@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "../components/ui/appSideBar";
 import { Navbar } from "../components/ui/navbar";
 
 
 
 export function SidebarHelper() {
+    const navigate = useNavigate();
 
     const [sessions, setSessions] = useState(() => {
         try {
@@ -40,6 +41,12 @@ export function SidebarHelper() {
 
         setSessions((currentSessions) => [...currentSessions, session]);
         setSessionToLoad(session.id);
+        navigate("/chat");
+    };
+
+    const openSession = (sessionId) => {
+        setSessionToLoad(sessionId);
+        navigate("/chat");
     };
 
     const renameSession = (sessionId, title) => {
@@ -60,7 +67,7 @@ export function SidebarHelper() {
         <SidebarProvider>
             <AppSidebar
                 sessions={sessions}
-                onSessionSelect={setSessionToLoad}
+                onSessionSelect={openSession}
                 onNewSession={createSession}
                 onRenameSession={renameSession}
                 onDeleteSession={deleteSession}

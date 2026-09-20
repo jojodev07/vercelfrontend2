@@ -24,11 +24,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-import { MessageSquare, Star, Plus, Pencil, Trash2 } from "lucide-react"
+import { MessageSquare, Star, Plus, Pencil, Trash2, ListTree } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { submitFeedback } from "../../axiosServices/axiosHelper";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -225,6 +226,18 @@ export function AppSidebar({
       </Dialog>
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton render={<NavLink to="/chat" />}>
+              <MessageSquare className="text-emerald-600" />
+              <span className="font-bold font-['Noto_Sans_Arabic_Variable'] text-center">المساعد الذكي</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton render={<NavLink to="/standards" />}>
+                <ListTree className="text-emerald-600"></ListTree>
+                <span className="font-bold font-['Noto_Sans_Arabic_Variable'] text-center">المعايير الوطنية</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
               <Dialog>
               <DialogTrigger className="w-full">
