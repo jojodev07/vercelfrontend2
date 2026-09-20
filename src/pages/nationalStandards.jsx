@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronLeft } from "lucide-react";
+import { ChevronDown, ExternalLink } from "lucide-react";
 
 const domains = [
   {
@@ -83,27 +83,26 @@ const colorStyles = {
   indigo: "border-indigo-200 bg-indigo-50 text-indigo-900 dark:border-indigo-900/70 dark:bg-indigo-950/30 dark:text-indigo-100",
 };
 
-function DetailRows({ details, parentId, openRows, onToggle }) {
+function DetailRows({ details }) {
   return (
     <div className="space-y-2 border-r-2 border-zinc-200 pr-4 dark:border-zinc-700">
-      {details.map((detail, index) => {
-        const id = `${parentId}-detail-${index}`;
-        const isOpen = openRows.has(id);
+      {details.map((detail) => {
+        const detailTitle = typeof detail === "string" ? detail : detail.title;
+        const detailHref = typeof detail === "string" ? "" : detail.href;
 
         return (
-          <div key={detail} className="overflow-hidden rounded-xl border border-zinc-200/80 bg-white/75 dark:border-zinc-700 dark:bg-zinc-900/60">
-            <button
-              type="button"
-              onClick={() => onToggle(id)}
-              aria-expanded={isOpen}
-              className="flex min-h-11 w-full items-center gap-3 px-4 py-3 text-right text-sm text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
-            >
-              <ChevronLeft className={`size-4 shrink-0 text-emerald-600 transition-transform ${isOpen ? "-rotate-90" : ""}`} />
-              <span className="flex-1">{detail}</span>
-            </button>
-            {isOpen && (
-              <div className="border-t border-zinc-100 px-11 py-3 text-sm leading-7 text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-                محور مرتبط ضمن هذا المجال من المعايير الوطنية لتنمية المعلمين مهنيًا.
+          <div key={detailTitle} className="overflow-hidden rounded-xl border border-zinc-200/80 bg-white/75 dark:border-zinc-700 dark:bg-zinc-900/60">
+            {detailHref ? (
+              <a
+                href={detailHref}
+                className="flex min-h-11 items-center gap-3 px-4 py-3 text-sm text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              >
+                <ExternalLink className="size-4 shrink-0 text-emerald-600" />
+                <span className="flex-1">{detailTitle}</span>
+              </a>
+            ) : (
+              <div className="flex min-h-11 items-center px-4 py-3 text-sm text-zinc-700 dark:text-zinc-200">
+                <span>{detailTitle}</span>
               </div>
             )}
           </div>
@@ -165,7 +164,7 @@ export function NationalStandards() {
                           </button>
                           {topicOpen && (
                             <div className="border-t border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/30">
-                              <DetailRows details={topic.details} parentId={topicId} openRows={openRows} onToggle={toggleRow} />
+                              <DetailRows details={topic.details} />
                             </div>
                           )}
                         </div>
