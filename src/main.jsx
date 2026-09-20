@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import '@fontsource-variable/noto-sans-arabic/index.css';
@@ -11,6 +10,7 @@ import { SidebarHelper } from './axiosServices/sidebarhelper.jsx';
 import { SecretReviewPage } from './pages/secretreviewpage.jsx';
 import { LandingPage } from './pages/landingPage.jsx';
 import { NationalStandards } from './pages/nationalStandards.jsx';
+import { NotFound } from './pages/notFound.jsx';
 
 document.documentElement.lang = 'ar';
 document.documentElement.dir = 'rtl';
@@ -27,6 +27,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/reviews" element={<SecretReviewPage/>} />
             <Route path="/standards" element={<NationalStandards/>} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

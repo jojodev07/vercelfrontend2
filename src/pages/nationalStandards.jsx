@@ -7,9 +7,9 @@ const domains = [
     title: "التربية والتعليم في الأردن",
     color: "emerald",
     topics: [
-      { title: "رؤية وزارة التربية والتعليم ورسالتها", details: ["الرؤية الوطنية للتعليم", "رسالة الوزارة وأولوياتها"] },
-      { title: "التشريعات التربوية", details: ["الأنظمة والتعليمات الناظمة للعمل التربوي", "حقوق وواجبات المعلم"] },
-      { title: "اتجاهات التطوير التربوي", details: ["التجديد في التعليم", "تحسين جودة المخرجات التعليمية"] },
+      { title: "رؤية وزارة التربية والتعليم ورسالتها", href: "" },
+      { title: "التشريعات التربوية", href: "" },
+      { title: "اتجاهات التطوير التربوي", href: "" },
     ],
   },
   {
@@ -17,8 +17,8 @@ const domains = [
     title: "الفلسفة الشخصية وأخلاقيات المهنة",
     color: "sky",
     topics: [
-      { title: "رؤية المعلم ورسالته", details: ["دور المعلم في بناء المتعلم", "الالتزام برسالة التعليم"] },
-      { title: "القيم والاتجاهات والسلوك المهني", details: ["النزاهة والعدالة المهنية", "احترام المتعلم والزملاء"] },
+      { title: "رؤية المعلم ورسالته", href: "" },
+      { title: "القيم والاتجاهات والسلوك المهني", href: "" },
     ],
   },
   {
@@ -26,9 +26,9 @@ const domains = [
     title: "المعرفة الأكاديمية والتربوية (البيداغوجية)",
     color: "amber",
     topics: [
-      { title: "نظريات التعلم والتعليم", details: ["مفاهيم التعلم الأساسية", "تطبيق النظريات في الموقف التعليمي"] },
-      { title: "المعرفة الأكاديمية", details: ["المفاهيم والمحتوى التخصصي", "الربط بين المعرفة والتطبيق"] },
-      { title: "الإطار العام للمناهج", details: ["مكونات المنهاج", "نواتج التعلم والمعايير"] },
+      { title: "نظريات التعلم والتعليم", href: "" },
+      { title: "المعرفة الأكاديمية", href: "" },
+      { title: "الإطار العام للمناهج", href: "" },
     ],
   },
   {
@@ -36,9 +36,9 @@ const domains = [
     title: "التعلم والتعليم",
     color: "violet",
     topics: [
-      { title: "التخطيط للتعلم", details: ["تحديد الأهداف التعليمية", "اختيار الاستراتيجيات والموارد"] },
-      { title: "تنفيذ عمليات التعلم والتعليم", details: ["تنويع طرائق التدريس", "إدارة التفاعل الصفي"] },
-      { title: "تقويم التعلم", details: ["التقويم التكويني والختامي", "استخدام نتائج التقويم للتحسين"] },
+      { title: "التخطيط للتعلم", href: "" },
+      { title: "تنفيذ عمليات التعلم والتعليم", href: "" },
+      { title: "تقويم التعلم", href: "" },
     ],
   },
   {
@@ -46,9 +46,9 @@ const domains = [
     title: "بيئة التعلم",
     color: "rose",
     topics: [
-      { title: "الأوعية المعرفية", details: ["مصادر التعلم الرقمية والورقية", "تنظيم المعرفة وإتاحتها"] },
-      { title: "الدعم النفسي الاجتماعي", details: ["الأمان النفسي للمتعلمين", "بناء علاقات إيجابية في الصف"] },
-      { title: "الابتكار والإبداع", details: ["تحفيز التفكير الإبداعي", "توظيف الأفكار الجديدة في التعلم"] },
+      { title: "الأوعية المعرفية", href: "" },
+      { title: "الدعم النفسي الاجتماعي", href: "" },
+      { title: "الابتكار والإبداع", href: "" },
     ],
   },
   {
@@ -56,9 +56,9 @@ const domains = [
     title: "التنمية المهنية المستدامة",
     color: "teal",
     topics: [
-      { title: "منهجية التنمية المهنية", details: ["تحديد الاحتياجات المهنية", "التعلم المستمر والتأمل"] },
-      { title: "توظيف التنمية المهنية", details: ["نقل أثر التدريب إلى الصف", "مشاركة الخبرات مع الزملاء"] },
-      { title: "استدامة التنمية المهنية", details: ["خطط النمو المهني", "متابعة التطور وقياس أثره"] },
+      { title: "منهجية التنمية المهنية", href: "" },
+      { title: "توظيف التنمية المهنية", href: "" },
+      { title: "استدامة التنمية المهنية", href: "" },
     ],
   },
   {
@@ -66,9 +66,9 @@ const domains = [
     title: "التعلم للحياة",
     color: "indigo",
     topics: [
-      { title: "البحث العلمي", details: ["طرح الأسئلة وجمع الأدلة", "قراءة النتائج والاستفادة منها"] },
-      { title: "المهارات الحياتية", details: ["التواصل والعمل الجماعي", "حل المشكلات واتخاذ القرار"] },
-      { title: "مسؤولية التعلم", details: ["التعلم الذاتي", "تحمل المسؤولية وبناء الدافعية"] },
+      { title: "البحث العلمي", href: "" },
+      { title: "المهارات الحياتية", href: "" },
+      { title: "مسؤولية التعلم", href: "" },
     ],
   },
 ];
@@ -82,35 +82,6 @@ const colorStyles = {
   teal: "border-teal-200 bg-teal-50 text-teal-900 dark:border-teal-900/70 dark:bg-teal-950/30 dark:text-teal-100",
   indigo: "border-indigo-200 bg-indigo-50 text-indigo-900 dark:border-indigo-900/70 dark:bg-indigo-950/30 dark:text-indigo-100",
 };
-
-function DetailRows({ details }) {
-  return (
-    <div className="space-y-2 border-r-2 border-zinc-200 pr-4 dark:border-zinc-700">
-      {details.map((detail) => {
-        const detailTitle = typeof detail === "string" ? detail : detail.title;
-        const detailHref = typeof detail === "string" ? "" : detail.href;
-
-        return (
-          <div key={detailTitle} className="overflow-hidden rounded-xl border border-zinc-200/80 bg-white/75 dark:border-zinc-700 dark:bg-zinc-900/60">
-            {detailHref ? (
-              <a
-                href={detailHref}
-                className="flex min-h-11 items-center gap-3 px-4 py-3 text-sm text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-800"
-              >
-                <ExternalLink className="size-4 shrink-0 text-emerald-600" />
-                <span className="flex-1">{detailTitle}</span>
-              </a>
-            ) : (
-              <div className="flex min-h-11 items-center px-4 py-3 text-sm text-zinc-700 dark:text-zinc-200">
-                <span>{detailTitle}</span>
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 export function NationalStandards() {
   const [openRows, setOpenRows] = useState(new Set(["domain-0"]));
@@ -146,27 +117,19 @@ export function NationalStandards() {
 
                 {domainOpen && (
                   <div className="space-y-2 border-t border-zinc-100 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-950/40 sm:p-4">
-                    {domain.topics.map((topic, topicIndex) => {
-                      const topicId = `${domainId}-topic-${topicIndex}`;
-                      const topicOpen = openRows.has(topicId);
-
+                    {domain.topics.map((topic) => {
                       return (
                         <div key={topic.title} className="overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
-                          <button
-                            type="button"
-                            onClick={() => toggleRow(topicId)}
-                            aria-expanded={topicOpen}
-                            className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-right font-semibold text-zinc-800 transition-colors hover:bg-emerald-50/60 dark:text-zinc-100 dark:hover:bg-emerald-950/20"
+                          <a
+                            href={topic.href || undefined}
+                            onClick={(event) => {
+                              if (!topic.href) event.preventDefault();
+                            }}
+                            className="flex min-h-14 items-center gap-3 px-4 py-3 text-right font-semibold text-zinc-800 transition-colors hover:bg-emerald-50/60 dark:text-zinc-100 dark:hover:bg-emerald-950/20"
                           >
-                            <ChevronDown className={`size-4 shrink-0 text-emerald-600 transition-transform ${topicOpen ? "rotate-180" : ""}`} />
+                            <ExternalLink className="size-4 shrink-0 text-emerald-600" />
                             <span className="flex-1">{topic.title}</span>
-                            <span className="text-xs font-normal text-zinc-400">{topic.details.length} محاور</span>
-                          </button>
-                          {topicOpen && (
-                            <div className="border-t border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/30">
-                              <DetailRows details={topic.details} />
-                            </div>
-                          )}
+                          </a>
                         </div>
                       );
                     })}
