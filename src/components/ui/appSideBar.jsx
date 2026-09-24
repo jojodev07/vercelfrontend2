@@ -102,7 +102,12 @@ export function AppSidebar({
     setFeedbackError("");
 
     try {
-      await submitFeedback(rating, review);
+      const formData = {
+        rating:rating,
+        review:review
+      }
+
+      await submitFeedback(formData);
       setMsgBoolean(true);
     } catch (error) {
       console.error("Error submitting feedback:", error);

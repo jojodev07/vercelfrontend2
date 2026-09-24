@@ -54,11 +54,20 @@ export async function AiResponse(request) {
     return AIaxiosInstance.post("/ai/v1/query", payload);
 }
 
-export async function submitFeedback(stars, review) {
-    return axiosInstance.post("/addreview", {
-        stars,
-        review,
-    });
+export async function submitFeedback(formData) {
+
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbxviIXDkpM7XRk-Yo7rdtmi0trHgt4uMKJNZmWuykuIMF7n_hjWusUpPlqni52ns4sk/exec";
+
+
+    return axios.post(
+        scriptUrl, 
+        JSON.stringify(formData),
+        {
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            },
+        }
+    )
 }
 
 export async function getFeedback() {

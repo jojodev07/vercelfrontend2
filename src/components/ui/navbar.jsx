@@ -132,11 +132,45 @@ export function Navbar({ name = "زائر" }) {
         أعطني افضل الاستراتيجيات
       </Badge>
     </CarouselItem>
+
+        <CarouselItem className="basis-1/2 pl-2">
+          <Badge
+            render={<button type="button" onClick={() => setStep(3)} />}
+            className="block w-full cursor-pointer whitespace-normal text-center bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900 font-['Noto_Sans_Arabic_Variable']"
+          >
+            تعرّف على المعايير الوطنية
+          </Badge>
+        </CarouselItem>
   </CarouselContent>
 
   <CarouselPrevious />
   <CarouselNext />
 </Carousel>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="w-full space-y-4 rounded-2xl border border-blue-200 bg-blue-50 p-5 text-right dark:border-blue-900/70 dark:bg-blue-950/30">
+          <h3 className="text-base font-bold text-blue-900 dark:text-blue-100">
+            المعايير الوطنية متاحة من الشريط الجانبي
+          </h3>
+          <p className="text-sm leading-7 text-blue-800 dark:text-blue-200">
+            إذا رغبت في الاطلاع عليها، يمكنك الانتقال إلى «المعايير الوطنية» من الشريط الجانبي في أي وقت.
+          </p>
+          <div className="space-y-2" aria-label="معاينة المعايير الوطنية">
+            <div className="flex items-center gap-3 rounded-xl border-r-4 border-emerald-500 bg-white/80 p-3 text-sm text-zinc-700 shadow-sm dark:bg-zinc-900/70 dark:text-zinc-200">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 font-bold text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300">1</span>
+              <span className="flex-1 font-semibold">التربية والتعليم في الأردن</span>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border-r-4 border-sky-500 bg-white/80 p-3 text-sm text-zinc-700 shadow-sm dark:bg-zinc-900/70 dark:text-zinc-200">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-sky-100 font-bold text-sky-700 dark:bg-sky-950/70 dark:text-sky-300">2</span>
+              <span className="flex-1 font-semibold">الفلسفة الشخصية وأخلاقيات المهنة</span>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border-r-4 border-amber-500 bg-white/80 p-3 text-sm text-zinc-700 shadow-sm dark:bg-zinc-900/70 dark:text-zinc-200">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-amber-100 font-bold text-amber-700 dark:bg-amber-950/70 dark:text-amber-300">3</span>
+              <span className="flex-1 font-semibold">المعرفة الأكاديمية والتربوية</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -146,7 +180,9 @@ export function Navbar({ name = "زائر" }) {
       <p className="text-center text-sm text-gray-500 font-['Noto_Sans_Arabic_Variable']">
         {step === 1
           ? "اكتب استفسارك في الخانة لبدء الحوار"
-          : "يمكنك سؤال النموذج عن العديد من الاسئلة، مثل"}
+            : step === 2
+              ? "يمكنك سؤال النموذج عن العديد من الاسئلة، مثل"
+              : "يمكنك زيارة المعايير الوطنية من الشريط الجانبي عند الحاجة"}
       </p>
 
       {step === 1 ? (
@@ -156,12 +192,28 @@ export function Navbar({ name = "زائر" }) {
         >
           التالي
         </Button>
-      ) : (
+      ) : step === 2 ? (
         <div className="flex w-full max-w-[200px] gap-2 font-['Noto_Sans_Arabic_Variable']">
           <Button
             variant="outline"
             className="flex-1"
             onClick={() => setStep(1)}
+          >
+            السابق
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={() => setStep(3)}
+          >
+التالي
+          </Button>
+        </div>
+      ) : (
+        <div className="flex w-full max-w-[200px] gap-2 font-['Noto_Sans_Arabic_Variable']">
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => setStep(2)}
           >
             السابق
           </Button>

@@ -1,14 +1,26 @@
-import { ArrowLeft, BookOpen, Bot, Compass, FileText, Lightbulb, Library, Sparkles, Users } from "lucide-react";
+import { ArrowLeft, BookOpen, Bot, Compass, FileText, Lightbulb, Library, Moon, Sparkles, Sun, Users } from "lucide-react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/Screenshot_2026-08-05_155526-removebg-preview.png";
 import { Button } from "../components/ui/button";
+import { ThemeContext } from "../contexts/DarkModeContext";
 
 export function LandingPage() {
   const navigate = useNavigate();
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-zinc-50 text-zinc-900" dir="rtl">
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
+    <main className="relative min-h-screen overflow-hidden bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50" dir="rtl">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleTheme}
+        aria-label={isDarkMode ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الداكن"}
+        className="absolute left-4 top-4 z-20 size-9 border border-zinc-200 bg-white/90 text-zinc-600 shadow-sm hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white sm:left-8 sm:top-5 lg:left-12"
+      >
+        {isDarkMode ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      </Button>
+      <nav className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
         <button
           type="button"
           onClick={() => navigate("/")}
@@ -18,40 +30,32 @@ export function LandingPage() {
           <img src={logo} alt="المعلم الخبير" className="h-11 w-auto object-contain" />
           <span className="hidden text-sm font-bold sm:block">المعلم الخبير</span>
         </button>
-        <div className="flex items-center gap-2 sm:gap-3">
-          <a
-            href="#about"
-            className="hidden px-3 py-2 text-sm font-semibold text-zinc-600 transition-colors hover:text-emerald-700 sm:block"
+        <div className="flex items-center gap-2 pl-10 sm:gap-3 sm:pl-0">
+          <button
+            type="button"
+            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+            className="px-2 py-2 text-sm font-semibold text-zinc-600 transition-colors hover:text-emerald-700 dark:text-zinc-300 dark:hover:text-emerald-400 sm:px-3"
           >
             من نحن
-          </a>
-          <Button variant="ghost" onClick={() => navigate("/chat")}>
-            افتح المحادثة
-          </Button>
-          <Button
-            onClick={() => navigate("/chat")}
-            className="bg-[#1E3A8A] text-white hover:bg-[#1E3A8A]"
-          >
-            ابدأ الآن
-          </Button>
+          </button>
         </div>
       </nav>
 
       <section className="relative mx-auto flex min-h-[calc(100vh-84px)] w-full max-w-7xl items-center px-5 pb-16 pt-8 sm:px-8 lg:px-12 lg:pb-24">
-        <div className="pointer-events-none absolute -left-28 top-16 h-72 w-72 rounded-full border border-emerald-200/70" />
-        <div className="pointer-events-none absolute bottom-16 right-0 h-48 w-48 rounded-full border border-blue-200/70" />
+        <div className="pointer-events-none absolute -left-28 top-16 h-72 w-72 rounded-full border border-emerald-200/70 dark:border-emerald-800/70" />
+        <div className="pointer-events-none absolute bottom-16 right-0 h-48 w-48 rounded-full border border-blue-200/70 dark:border-blue-900/70" />
 
         <div className="relative z-10 grid w-full items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
           <div className="max-w-2xl">
-            <div className="mb-6 inline-flex items-center gap-2 border-b-2 border-emerald-500 pb-2 text-sm font-semibold text-emerald-700">
+            <div className="mb-6 inline-flex items-center gap-2 border-b-2 border-emerald-500 pb-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
               <Sparkles className="size-4" />
               مساحة أذكى للمعلم
             </div>
-            <h1 className="max-w-xl text-5xl font-black leading-[1.16] tracking-tight text-zinc-900 sm:text-6xl lg:text-7xl">
+            <h1 className="max-w-xl text-5xl font-black leading-[1.16] tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
               وقتك للتعليم،
               <span className="block text-emerald-600">ودعمك صار أقرب.</span>
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-loose text-zinc-600 sm:text-xl">
+            <p className="mt-7 max-w-xl text-lg leading-loose text-zinc-600 dark:text-zinc-300 sm:text-xl">
               مساعد تربوي يفهم أسئلتك، يختصر بحثك، ويساعدك على اتخاذ قرار أوضح داخل الصف وخارجه.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -67,12 +71,12 @@ export function LandingPage() {
                 size="lg"
                 variant="ghost"
                 onClick={() => navigate("/chat")}
-                className="h-12 justify-center px-5 text-[#1E3A8A] hover:bg-blue-100"
+                className="h-12 justify-center px-5 text-[#1E3A8A] hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-950/60"
               >
                 ابدأ المحادثة
               </Button>
             </div>
-            <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-500">
+            <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-500 dark:text-zinc-400">
               <span className="flex items-center gap-2"><BookOpen className="size-4 text-emerald-600" /> أسئلة تربوية عملية</span>
               <span className="flex items-center gap-2"><FileText className="size-4 text-emerald-600" /> مصادر رسمية منظمة</span>
             </div>
@@ -105,51 +109,51 @@ export function LandingPage() {
                 </span>
               </div>
             </div>
-            <div className="absolute -bottom-2 -left-2 rounded-2xl border border-zinc-200 bg-white px-5 py-4 shadow-xl sm:-left-8">
-              <p className="text-xs text-zinc-500">جاهز لدعمك</p>
+            <div className="absolute -bottom-2 -left-2 rounded-2xl border border-zinc-200 bg-white px-5 py-4 shadow-xl dark:border-zinc-700 dark:bg-zinc-900 sm:-left-8">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">جاهز لدعمك</p>
               <p className="mt-1 text-sm font-bold text-emerald-600">في كل حصة، وكل سؤال</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="about" className="border-t border-zinc-200 bg-white px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <section id="about" className="border-t border-zinc-200 bg-white px-5 py-20 dark:border-zinc-800 dark:bg-zinc-900 sm:px-8 lg:px-12 lg:py-28">
         <div className="mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-20">
           <div>
-            <div className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700">
+            <div className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
               <Users className="size-4" />
               من نحن
             </div>
-            <h2 className="max-w-lg text-4xl font-black leading-tight text-zinc-900 sm:text-5xl">
+            <h2 className="max-w-lg text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
               فكرة بدأت من واقع المعلم
             </h2>
-            <p className="mt-6 max-w-xl text-lg leading-loose text-zinc-600">
+            <p className="mt-6 max-w-xl text-lg leading-loose text-zinc-600 dark:text-zinc-300">
               إباء العناتي معلمة تؤمن بأن المعلم يحتاج إلى دعم عملي وسريع يرافقه في تفاصيل يومه. من هذه الحاجة ولدت فكرة «المعلم الخبير»: موقع يجمع المعرفة التربوية، والمصادر الموثوقة، والمساعدة الذكية في مساحة واحدة سهلة الوصول.
             </p>
           </div>
 
-          <div className="rounded-[2rem] bg-zinc-50 p-6 sm:p-8">
-            <div className="flex size-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+          <div className="rounded-[2rem] bg-zinc-50 p-6 dark:bg-zinc-950 sm:p-8">
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
               <Lightbulb className="size-6" />
             </div>
-            <h3 className="mt-6 text-2xl font-bold text-zinc-900">لماذا هذا الموقع؟</h3>
-            <p className="mt-4 leading-8 text-zinc-600">
+            <h3 className="mt-6 text-2xl font-bold text-zinc-900 dark:text-zinc-50">لماذا هذا الموقع؟</h3>
+            <p className="mt-4 leading-8 text-zinc-600 dark:text-zinc-300">
               لأن وقت المعلم ثمين، ولأن الوصول إلى إجابة موثوقة أو فكرة قابلة للتطبيق لا ينبغي أن يكون رحلة طويلة. صُمم الموقع ليمنحك وضوحًا أكبر، ويحوّل الأسئلة اليومية إلى خطوات عملية تساعدك أنت وطلابك.
             </p>
             <ul className="mt-7 grid gap-4 sm:grid-cols-2" aria-label="مزايا الموقع">
-              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                 <Compass className="mt-1 size-5 shrink-0 text-[#1E3A8A]" />
                 إجابات تربوية عملية وسهلة التطبيق
               </li>
-              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                 <Library className="mt-1 size-5 shrink-0 text-sky-600" />
                 مصادر رسمية منظمة في مكان واحد
               </li>
-              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                 <Bot className="mt-1 size-5 shrink-0 text-amber-500" />
                 مساعدة ذكية تفهم احتياجات المعلم
               </li>
-              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                 <BookOpen className="mt-1 size-5 shrink-0 text-emerald-600" />
                 أدوات تدعم التخطيط واتخاذ القرار
               </li>
