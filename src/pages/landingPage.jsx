@@ -1,4 +1,4 @@
-import { ArrowLeft, BookOpen, FileText, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpen, Bot, Compass, FileText, Lightbulb, Library, Sparkles, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/Screenshot_2026-08-05_155526-removebg-preview.png";
 import { Button } from "../components/ui/button";
@@ -19,6 +19,12 @@ export function LandingPage() {
           <span className="hidden text-sm font-bold sm:block">المعلم الخبير</span>
         </button>
         <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href="#about"
+            className="hidden px-3 py-2 text-sm font-semibold text-zinc-600 transition-colors hover:text-emerald-700 sm:block"
+          >
+            من نحن
+          </a>
           <Button variant="ghost" onClick={() => navigate("/chat")}>
             افتح المحادثة
           </Button>
@@ -103,6 +109,51 @@ export function LandingPage() {
               <p className="text-xs text-zinc-500">جاهز لدعمك</p>
               <p className="mt-1 text-sm font-bold text-emerald-600">في كل حصة، وكل سؤال</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="border-t border-zinc-200 bg-white px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-20">
+          <div>
+            <div className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700">
+              <Users className="size-4" />
+              من نحن
+            </div>
+            <h2 className="max-w-lg text-4xl font-black leading-tight text-zinc-900 sm:text-5xl">
+              فكرة بدأت من واقع المعلم
+            </h2>
+            <p className="mt-6 max-w-xl text-lg leading-loose text-zinc-600">
+              إباء العناتي معلمة تؤمن بأن المعلم يحتاج إلى دعم عملي وسريع يرافقه في تفاصيل يومه. من هذه الحاجة ولدت فكرة «المعلم الخبير»: موقع يجمع المعرفة التربوية، والمصادر الموثوقة، والمساعدة الذكية في مساحة واحدة سهلة الوصول.
+            </p>
+          </div>
+
+          <div className="rounded-[2rem] bg-zinc-50 p-6 sm:p-8">
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+              <Lightbulb className="size-6" />
+            </div>
+            <h3 className="mt-6 text-2xl font-bold text-zinc-900">لماذا هذا الموقع؟</h3>
+            <p className="mt-4 leading-8 text-zinc-600">
+              لأن وقت المعلم ثمين، ولأن الوصول إلى إجابة موثوقة أو فكرة قابلة للتطبيق لا ينبغي أن يكون رحلة طويلة. صُمم الموقع ليمنحك وضوحًا أكبر، ويحوّل الأسئلة اليومية إلى خطوات عملية تساعدك أنت وطلابك.
+            </p>
+            <ul className="mt-7 grid gap-4 sm:grid-cols-2" aria-label="مزايا الموقع">
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+                <Compass className="mt-1 size-5 shrink-0 text-[#1E3A8A]" />
+                إجابات تربوية عملية وسهلة التطبيق
+              </li>
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+                <Library className="mt-1 size-5 shrink-0 text-sky-600" />
+                مصادر رسمية منظمة في مكان واحد
+              </li>
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+                <Bot className="mt-1 size-5 shrink-0 text-amber-500" />
+                مساعدة ذكية تفهم احتياجات المعلم
+              </li>
+              <li className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm leading-7 text-zinc-700">
+                <BookOpen className="mt-1 size-5 shrink-0 text-emerald-600" />
+                أدوات تدعم التخطيط واتخاذ القرار
+              </li>
+            </ul>
           </div>
         </div>
       </section>
