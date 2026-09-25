@@ -54,6 +54,15 @@ export async function AiResponse(request) {
     return AIaxiosInstance.post("/ai/v1/query", payload);
 }
 
+export async function generateLessonPlan(payload) {
+    return AIaxiosInstance.post("/api/download-docx", payload, {
+        responseType: "blob",
+        headers: {
+            Accept: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        },
+    });
+}
+
 export async function submitFeedback(formData) {
 
     const scriptUrl = "https://script.google.com/macros/s/AKfycbxviIXDkpM7XRk-Yo7rdtmi0trHgt4uMKJNZmWuykuIMF7n_hjWusUpPlqni52ns4sk/exec";

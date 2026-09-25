@@ -24,7 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-import { MessageSquare, Star, Plus, Pencil, Trash2, ListTree } from "lucide-react"
+import { BookOpenCheck, MessageSquare, Star, Plus, Pencil, Trash2, ListTree } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
@@ -241,6 +241,12 @@ export function AppSidebar({
             <SidebarMenuButton render={<NavLink to="/standards" />}>
                 <ListTree className="text-emerald-600"></ListTree>
                 <span className="font-bold font-['Noto_Sans_Arabic_Variable'] text-center">المعايير الوطنية</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton render={<NavLink to="/lesson-plan" />}>
+                <BookOpenCheck className="text-emerald-600" />
+                <span className="font-bold font-['Noto_Sans_Arabic_Variable'] text-center">خطة تحضير الدرس</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

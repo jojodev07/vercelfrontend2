@@ -11,6 +11,7 @@ import { SecretReviewPage } from './pages/secretreviewpage.jsx';
 import { LandingPage } from './pages/landingPage.jsx';
 import { NationalStandards } from './pages/nationalStandards.jsx';
 import { NotFound } from './pages/notFound.jsx';
+import { LessonPlan } from './pages/lessonPlan.jsx';
 
 document.documentElement.lang = 'ar';
 document.documentElement.dir = 'rtl';
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/files" element={<OfficialFiles/>} />
             <Route path="/reviews" element={<SecretReviewPage/>} />
             <Route path="/standards" element={<NationalStandards/>} />
+            <Route path="/lesson-plan" element={<LessonPlan/>} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
